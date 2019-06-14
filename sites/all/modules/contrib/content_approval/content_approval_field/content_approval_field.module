@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_field_info().
+ */
+function content_approval_field_field_info() {
+  return array(
+    'content_approval' => array(
+      'label' => t('Content approval field'),
+      'description' => t('Contact approval to record which content was submitted with approval request.'),
+      'default_widget' => 'content_approval',
+      'default_formatter' => 'content_approval',
+      'no_ui' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function content_approval_field_field_is_empty($item, $field) {
+  // Never never do ...
+  return FALSE;
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function content_approval_field_field_widget_info() {
+  return array(
+    'content_approval' => array(
+      'label' => t('Content approval field widget'),
+      'field types' => array('content_approval'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function content_approval_field_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+
+  if ($instance['widget']['type'] == 'content_approval' && user_access('administer nodes')) {
+
+    $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : 0;
+
+    $element = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#group' => 'additional_settings',
+      '#attributes' => array(
+        'class' => array('node-edit-form-content_approval'),
+      ),
+      '#attached' => array(
+        'js' => array(
+          drupal_get_path('module', 'content_approval_field') . '/content_approval_field.js',
+        ),
+      ),
+    ) + $element;
+
+    $element['value'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Need approval prior publication'),
+      '#default_value' => $value,
+      '#description' => t("If checked this content will be set to unpublished if edited by users which doesn't have the 'skip content approval' permission."),
+    );
+  }
+
+  return $element;
+}

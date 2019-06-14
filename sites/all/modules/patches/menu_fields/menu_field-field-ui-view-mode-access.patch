@@ -1,0 +1,19 @@
+Index: menu_fields.module
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- menu_fields.module	(revision cd6e3f7a5e0cfcdd8e1d267433c5931e9a4a71e1)
++++ menu_fields.module	(revision )
+@@ -758,7 +758,10 @@
+  * @return boolean
+  */
+ function menu_fields_field_ui_view_mode_menu_access($entity_type, $bundle, $view_mode, $access_callback) {
+-  return _field_ui_view_mode_menu_access($entity_type, str_replace('-', '_', $bundle), $view_mode, $access_callback, $bundle);
++  $args = func_get_args();
++  $args[1] = str_replace('-', '_', $bundle);
++
++  return call_user_func_array('_field_ui_view_mode_menu_access', $args);
+ }
+ 
+ /**

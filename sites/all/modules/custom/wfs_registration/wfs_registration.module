@@ -1,0 +1,488 @@
+<?php
+/**
+ * @file
+ * Code for the wfs_registration module.
+ */
+
+/**
+ * Implements hook_mail().
+ *
+ * @param string $form
+ * @param array $message
+ * @param array $params
+ */
+function wfs_registration_mail($key, &$message, $params) {
+  $message['headers'] = array(
+    'MIME-Version' => '1.0',
+    'Content-Type' => 'text/html; charset=UTF-8; format=flowed',
+    'Content-Transfer-Encoding' => '8Bit',
+    'X-Mailer' => 'Drupal',
+    'Return-Path' => $message['from'],
+  );
+
+  $options = array(
+    'langcode' => isset($message['language']->language) ? $message['language']->language : 'en',
+  );
+  //Add custom headers
+  if (isset($params['headers']) && is_array($params['headers'])) {
+    $message['headers'] = array_merge($message['headers'], $params['headers']);
+  }
+  switch ($key) {
+    case 'default':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['body'];
+      // Add attachment when available.
+      if (isset($params['attachment'])) {
+        $message['params']['attachments'][] = $params['attachment'];
+      }
+      if (isset($params['attachments']) && is_array($params['attachments'])) {
+        array_push($message['params']['attachments'], $params['attachments']);
+      }
+
+      break;
+    default:
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function wfs_registration_form_system_site_information_settings_alter(&$form, &$form_state, $form_id) {
+  ctools_include('wfs_registration.help', 'wfs_registration');
+
+  $form['email'] = array(
+    '#type' => 'vertical_tabs',
+    '#title' => t('E-mails'),
+    '#group' => 'email',
+  );
+
+  // These email tokens are shared for all settings, so just define
+  // the list once to help ensure they stay in sync.
+  $available_vars = array(
+    '[edit-link]', 
+    '[type]',
+    '[reason]'
+  );
+  $email_token_help = t('Available variables are: @vars.', array('@vars' => implode(', ', $available_vars)));
+  
+  $form['email_reason'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Reason email'),
+    '#group' => 'email',
+    '#description' => $email_token_help,
+  );
+  $form['email_reason']['email_reason_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => wfs_registration_user_mail_text('email_reason_subject', NULL, array(), FALSE),
+  );
+  $form['email_reason']['email_reason_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => wfs_registration_user_mail_text('email_reason_body', NULL, array(), FALSE),
+    '#rows' => 15
+  );
+
+  // These email tokens are shared for all settings, so just define
+  // the list once to help ensure they stay in sync.
+  unset($available_vars[2]);
+  $email_token_help = t('Available variables are: @vars.', array('@vars' => implode(', ', $available_vars)));
+
+  $form['email_need_approve'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Need approve email'),
+    '#group' => 'email',
+    '#description' => $email_token_help,
+  );
+  $form['email_need_approve']['email_need_approve_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => wfs_registration_user_mail_text('email_need_approve_subject', NULL, array(), FALSE),
+  );
+  $form['email_need_approve']['email_need_approve_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => wfs_registration_user_mail_text('email_need_approve_body', NULL, array(), FALSE),
+    '#rows' => 15
+  );
+
+  // Register pending approval (admin)
+  $form['wfs_registration_register_pending_approval_admin'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Register pending approval (admin)'),
+    '#group' => 'email',
+  );
+  $form['wfs_registration_register_pending_approval_admin']['wfs_registration_register_pending_approval_admin_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => wfs_registration_user_mail_text('wfs_registration_register_pending_approval_admin_subject', NULL, array(), FALSE),
+  );
+  $form['wfs_registration_register_pending_approval_admin']['wfs_registration_register_pending_approval_admin_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => wfs_registration_user_mail_text('wfs_registration_register_pending_approval_admin_body', NULL, array(), FALSE),
+    '#rows' => 15
+  );
+  $form['wfs_registration_register_pending_approval_admin']['tokens'] = array(
+    '#theme' => 'token_tree_link',
+    '#token_types' => array('user'),
+    '#global_types' => FALSE,
+    '#click_insert' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+* Implementation of hook_form_FORM_ID_alter()
+*/
+function wfs_registration_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'winery_node_form':
+    case 'news_node_form':
+    case 'event_node_form':
+      $form['field_status']['#access'] = FALSE;
+
+      if (user_has_role(3) 
+        && $form['nid']['#value'] != NULL 
+        && !empty($form['#node']->field_status[LANGUAGE_NONE][0]['value'])
+        && $form['#node']->field_status[LANGUAGE_NONE][0]['value'] == 'waits_approve') {
+        $author = user_load($form['uid']['#value']);
+
+        if (!empty($author->roles[5])) {
+          $form['actions']['send_reason'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Send reason'),
+            '#weight' => 0,
+          );
+          $form['actions']['reason'] = array(
+            '#type' => 'textarea',
+            '#title' => t('Reason'),
+            '#weight' => 0,
+            '#states' => array(
+              'visible' => array(
+                ':input[name="send_reason"]' => array('checked' => TRUE),
+              ),
+            ),
+          );
+        }
+      }
+
+      if (user_has_role(5) 
+      && $form_id == 'winery_node_form'
+      && $form['nid']['#value'] == NULL) {
+        $form['actions']['legal'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('I hereby declare that this winery is authorising company to Icex as per indicated in <a href="@link" target="_blank">@link</a>', array('@link' => 'https://www.icex.es/icex/es/navegacion-principal/que-es-icex/si-autoriza-exporta/index.html')),
+          '#weight' => -100
+        );
+      
+        $form['#validate'][] = 'wfs_registration_form_user_register_validate';
+      }
+      break;
+  }
+}
+
+function wfs_registration_node_submit($node, $form, &$form_state) {
+  switch ($node->type) {
+    case 'winery':
+    case 'news':
+    case 'event':
+      global $language;
+      global $base_url;
+
+      $values = $form_state['values'];
+
+      // Mail from.
+      $mail_from = variable_get('site_mail', '');
+
+      if (user_has_role(3)) {
+        if (!empty($values['send_reason']) && $values['send_reason']) {
+          ctools_include('wfs_registration.help', 'wfs_registration');
+          // Send reason.
+          $author = user_load($node->uid);
+          $reason = $form_state['values']['reason'];
+          
+          $mail_to = $author->mail;
+
+          // Subject.
+          $subject = wfs_registration_user_mail_text('email_reason_subject', NULL, array(), FALSE);
+          // Body.
+          $body = nl2br(wfs_registration_user_mail_text('email_reason_body', NULL, array(), FALSE));
+          // Replace tokens.
+          $tokens = array(
+            '[edit-link]', 
+            '[type]',
+            '[reason]'
+          );
+          $replaces = array(
+            l(t('Edit link'), $base_url . '/node/' . $node->nid . '/edit'),
+            $node->type,
+            nl2br($reason)
+          );
+          $subject = str_replace($tokens, $replaces, $subject);
+          $body = str_replace($tokens, $replaces, $body);
+
+          // Send email about reason.
+          $message = drupal_mail('wfs_registration', 'default', $mail_to, $language->language, [
+            'subject' => $subject,
+            'body'    => $body,
+            'headers' => ['Content-Type' => 'text/html; charset=utf-8']
+          ], $mail_from);
+
+          // Only if sending was not canceled.
+          if ($message['send']) {
+            watchdog('wfs_registration', '<pre>' . print_r($message, true) . '</pre>');
+          }
+          else {
+            watchdog('wfs_registration', 'Message was not sent!');
+          }
+
+          // Status: Need edit by reason.
+          $node->field_status[LANGUAGE_NONE][0]['value'] = 'need_edit';
+        }
+
+        // Status: Approved.
+        if ($values['status']) {
+          $node->field_status[LANGUAGE_NONE][0]['value'] = 'approved';
+        }
+      }
+      elseif (user_has_role(5) && !empty($node->nid) && $node->nid) {
+        ctools_include('wfs_registration.help', 'wfs_registration');
+
+        // Send mail need approve.
+        wfs_registration_send_mail_need_approve($node);
+
+        // Status: Waits for approve.
+        $node->field_status[LANGUAGE_NONE][0]['value'] = 'waits_approve';
+      }
+
+      // $form_state['redirect'] = 'user';
+      break;
+  }
+}
+
+/**
+* Implementation of hook_entity_insert()
+*/
+function wfs_registration_entity_insert($entity, $type) {
+  if (user_has_role(5) && $type == 'node') {
+    $node = $entity;
+
+    switch ($node->type) {
+      case 'winery':
+      case 'news':
+      case 'event':
+        ctools_include('wfs_registration.help', 'wfs_registration');
+
+        // Send mail need approve.
+        wfs_registration_send_mail_need_approve($node);
+        break;
+    }
+  }
+}
+
+/**
+* Implementation of hook_form_FORM_ID_alter()
+*/
+function wfs_registration_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  drupal_set_title(t('Create a new account'));
+
+  // Name.
+  $form["account"]["name"]["#title"] = t('Contact name');
+  unset($form["account"]["name"]["#description"]);
+  // Email.
+  $form["account"]["mail"]["#title"] = t('Your email');
+  unset($form["account"]["mail"]["#description"]);
+  // Pass.
+  unset($form["account"]["pass"]["#description"]);
+  // Submit.
+  $form["actions"]["submit"]["#value"] = t('Sign Up');
+
+  // Insert our handler BEFORE user_register_submit().
+  // This allows us to add the role before the new user is saved.
+  array_unshift($form['#submit'], 'wfs_registration_form_user_register_submit');
+  $form['#submit'][] = 'wfs_registration_form_user_register_second_submit';
+
+  // Add JS.
+  $form['#attached']['js'][] = array(
+    'type' => 'file',
+    'data' => drupal_get_path('module','wfs_registration') . '/js/wfs_registration.js',
+  );
+  // Add CSS.
+  $form['#attached']['css'][] = array(
+    'type' => 'file',
+    'data' => drupal_get_path('module','wfs_registration') . '/css/wfs_registration.css',
+  );
+
+  $form['actions']['legal'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('If the expert review of the recommendations for this high-quality wine promotion project is judged to be inconsistent with the overall purpose of the project, my account and data will not be approved and uploaded, I understand and accept this.'),
+    '#weight' => -100
+  );
+
+  $form['#validate'][] = 'wfs_registration_form_user_register_validate';
+}
+
+/**
+ * Validate for the user registration form.
+ */
+function wfs_registration_form_user_register_validate($form, &$form_state) {
+  $legal = $form_state['values']['legal'];  
+
+  if ($legal === 0) {
+    form_set_error('select', 'Please check the agreement.');
+  }
+}
+
+/**
+ * Submit handler for the user registration form.
+ */
+function wfs_registration_form_user_register_submit(&$form, &$form_state) {
+  $roles = user_roles(TRUE);
+  
+  // Set role "registered".
+  // $form_state['values']['roles'][5] = $roles[5];
+  $form_state['values']['roles'][5] = TRUE;
+}
+
+/**
+ * Submit handler for the user registration form.
+ */
+function wfs_registration_form_user_register_second_submit(&$form, &$form_state) {
+  drupal_get_messages();
+  drupal_set_message(t('Thank you for signing up.<br><br>Your request is pending review. Please wait.'), 'confirm');
+
+  $form_state['redirect'] = 'user/register';
+}
+
+/**
+* Implementation of hook_form_FORM_ID_alter()
+*/
+function wfs_registration_form_user_login_alter(&$form, &$form_state, $form_id) {
+  drupal_set_title(t('Log in'));
+
+  // Name.
+  $form["name"]["#title"] = t('Your email');
+  unset($form["name"]["#description"]);
+  // Pass.
+  $form["pass"]["#title"] = t('Your password');
+  unset($form["pass"]["#description"]);
+  // Submit.
+  $form["actions"]["submit"]["#value"] = t('Login');
+  // Forgot password.
+  $form["forgot_pass"]["#markup"] = l(t('I forgot my password'), 'user/password');
+}
+
+/**
+* Implementation of hook_form_FORM_ID_alter()
+*/
+function wfs_registration_form_user_pass_alter(&$form, &$form_state, $form_id) {
+  drupal_set_title(t('I forgot my password'));
+
+  // Info.
+  $form["info"] = array(
+    '#markup' => t('Please enter your email address below and we will send you instructions to reset your password.'),
+    '#weight' => -100 
+  );
+  // Email.
+  $form["name"]["#title"] = t('Your email');
+  // Submit.
+  $form["actions"]["submit"]["#value"] = t('Get new password');
+  
+  // Add custom submit handler.
+  $form["#submit"][] = 'wfs_registration_form_user_pass_submit';
+
+  // Add JS.
+  $form['#attached']['js'][] = array(
+    'type' => 'file',
+    'data' => drupal_get_path('module','wfs_registration') . '/js/wfs_registration.js',
+  );
+  // Add CSS.
+  $form['#attached']['css'][] = array(
+    'type' => 'file',
+    'data' => drupal_get_path('module','wfs_registration') . '/css/wfs_registration.css',
+  );
+}
+
+/**
+ * Submit handler for the user pass form.
+ */
+function wfs_registration_form_user_pass_submit($form, &$form_state) {
+  drupal_get_messages();
+  drupal_set_message(t('A link has been sent to your address.<br> Please follow the instructions to reset your password.'), 'confirm');
+  $form_state['redirect'] = 'user/password';
+}
+
+/**
+* Implementation of hook_form_FORM_ID_alter()
+*/
+function wfs_registration_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  if (arg(0) == 'user' && arg(1) == 'reset' && !user_is_logged_in() && arg(5) == 'brief') {
+    drupal_set_title(t('Reset password'));
+    // Submit.
+    $form['actions']['submit']['#value'] = t('Update new password');
+  }
+}
+
+/**
+* Implementation of hook_menu_local_tasks_alter()
+*/
+function wfs_registration_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  if (!empty($data["tabs"][0]["output"][0]["#link"]["access_callback"]) && $data["tabs"][0]["output"][0]["#link"]["access_callback"] == "user_register_access") {
+    $data["tabs"][0]["output"][0]["#link"]["title"] = t('Sign Up');
+  }
+}
+
+/**
+* Implementation of hook_node_access()
+*/
+function wfs_registration_node_access($node, $op, $account) {
+  // Deny access for registered user if he already have winery.
+  if ($op == 'create' && $node == 'winery') {
+    global $user;
+
+    if (!empty($user->roles[5])) {
+      global $language;
+  
+      $winery_exist = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->condition('n.type', 'winery')
+      ->condition('n.uid', $user->uid)
+      // ->condition('n.language', $language->language)
+      ->execute()
+      ->fetchField();
+    
+      if ($winery_exist) {
+        return NODE_ACCESS_DENY;
+      }
+    }
+  }
+
+  // Returning nothing from this function would have the same effect.
+  return NODE_ACCESS_IGNORE;
+}
+
+/**
+* Implementation of hook_mail_alter()
+*/
+function wfs_registration_mail_alter(&$message) {
+  if ($message['id'] == 'user_register_pending_approval_admin') {
+    $language = $message['language'];
+    $account= array('user' => $message['params']['account']);
+
+    ctools_include('wfs_registration.help', 'wfs_registration');
+    
+    unset($message['subject']);
+    unset($message['body']);
+
+    // Subject.
+    $subject = wfs_registration_user_mail_text('wfs_registration_register_pending_approval_admin_subject', NULL, array(), FALSE);
+    // Body.
+    $body = wfs_registration_user_mail_text('wfs_registration_register_pending_approval_admin_body', NULL, array(), FALSE);
+  
+    $message['subject'] = token_replace($subject, $account, array('language' => $language , 'callback' => 'user_mail_tokens', 'sanitize' => FALSE, 'clear' => TRUE));
+    $message['body'][] = token_replace($body, $account, array('language' => $language , 'callback' => 'user_mail_tokens', 'sanitize' => FALSE, 'clear' => TRUE));
+  }
+}

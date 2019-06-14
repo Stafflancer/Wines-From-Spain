@@ -1,0 +1,4 @@
+name = WFS Common Module
+description = WFS Common Module
+core = 7.x
+package = Custom

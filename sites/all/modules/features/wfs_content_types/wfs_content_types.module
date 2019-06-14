@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * @file
+ * Code for the WFS Content Types feature.
+ */
+
+include_once 'wfs_content_types.features.inc';

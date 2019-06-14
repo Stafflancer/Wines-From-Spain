@@ -1,0 +1,30 @@
+ .../modules/contrib/content_access/content_access.admin.inc   | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/sites/all/modules/contrib/content_access/content_access.admin.inc b/sites/all/modules/contrib/content_access/content_access.admin.inc
+index 0827cac86..97ec9213a 100644
+--- a/sites/all/modules/contrib/content_access/content_access.admin.inc
++++ b/sites/all/modules/contrib/content_access/content_access.admin.inc
+@@ -47,12 +47,21 @@ function content_access_page($form, &$form_state, $node) {
+ 
+   $form_state['node'] = $node;
+ 
++  $my_custom_access_grants = content_access_get_per_node_settings($node);
++  
++  if ($my_custom_access_grants > 0) {
++    $my_custom_access_grants_boolean = TRUE;
++  } else {
++    $my_custom_access_grants_boolean = FALSE;
++  }
++
+   $form['reset'] = array(
+     '#type' => 'submit',
+     '#value' => t('Reset to defaults'),
+     '#weight' => 10,
+     '#submit' => array('content_access_page_reset'),
+-    '#access' => count(content_access_get_per_node_settings($node)) > 0,
++    // '#access' => count(content_access_get_per_node_settings($node)) > 0,
++    '#access' => $my_custom_access_grants_boolean,
+   );
+   $form['submit'] = array(
+     '#type' => 'submit',

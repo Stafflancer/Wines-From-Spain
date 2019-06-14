@@ -1,0 +1,25 @@
+ sites/all/modules/contrib/simple_pass_reset/simple_pass_reset.module | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sites/all/modules/contrib/simple_pass_reset/simple_pass_reset.module b/sites/all/modules/contrib/simple_pass_reset/simple_pass_reset.module
+index bcbab2665..73a80b250 100644
+--- a/sites/all/modules/contrib/simple_pass_reset/simple_pass_reset.module
++++ b/sites/all/modules/contrib/simple_pass_reset/simple_pass_reset.module
+@@ -83,7 +83,7 @@ function simple_pass_reset_form_user_profile_form_alter(&$form, &$form_state) {
+     // Our submit handler will log the user in after form submit.
+     $form['#submit'][] = 'simple_pass_reset_pass_reset_submit';
+ 
+-    $form['actions']['submit']['#value'] = t('Save and log in as !username', array('!username' => format_username($form['#user'])));
++    // $form['actions']['submit']['#value'] = t('Save and log in as !username', array('!username' => format_username($form['#user'])));
+ 
+     // Links provided by the Bakery module will not work because the user is not
+     // logged in yet.
+@@ -104,7 +104,7 @@ function simple_pass_reset_form_user_profile_form_alter(&$form, &$form_state) {
+       $form['account']['pass']['#required'] = TRUE;
+ 
+       if (arg(5) == 'brief') {
+-        drupal_set_title(t('Choose a new password')); // Instead of "Reset password".
++        // drupal_set_title(t('Choose a new password')); // Instead of "Reset password".
+ 
+         // Hide "To change the current user password..."
+         unset($form['account']['pass']['#description']);

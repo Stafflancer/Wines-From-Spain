@@ -1,0 +1,41 @@
+@font-face {
+  font-family: "LatoRegular";
+  /*src: url("../fonts/Lato/Lato-Regular.ttf");*/
+  src: url("/fonts/Lato/Lato-Regular.ttf");
+  font-style: normal;
+  font-weight: normal;
+  /*font-display: swap;*/
+}
+@font-face {
+  font-family: "LatoBlack";
+  /*src: url("../fonts/Lato/Lato-Black.ttf");*/
+  src: url("/fonts/Lato/Lato-Black.ttf");
+  font-style: normal;
+  font-weight: normal;
+  /*font-display: swap;*/
+}
+@font-face {
+  font-family: "LatoBold";
+  /*src: url("../fonts/Lato/Lato-Bold.ttf");*/
+  src: url("/fonts/Lato/Lato-Bold.ttf");
+  font-style: normal;
+  font-weight: normal;
+  /*font-display: swap;*/
+}
+@font-face {
+  font-family: "VerdanaBold";
+  /*src: url("../fonts/Verdana/VerdanaBold.ttf");*/
+  src: url("/fonts/Verdana/VerdanaBold.ttf");
+  font-style: normal;
+  font-weight: normal;
+  /*font-display: swap;*/
+}
+/*For Chinese*/
+@font-face {
+  font-family: "STHeitiSc";
+  /*src: url("../fonts/STHeitiSc.ttf");*/
+  src: url("/fonts/STHeitiSc.ttf");
+  font-style: normal;
+  font-weight: normal;
+  /*font-display: swap;*/
+}

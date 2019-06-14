@@ -1,0 +1,76 @@
+.at3winsvc_settings,
+.at3winsvc_more,
+.views-exposed-form .views-widget-filter-field_winery_target_id {
+	display: none !important;
+}
+
+#at-expanded-menu-service-list-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  text-align: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+#at-expanded-menu-service-list-container > li.at3winsvc_facebook {
+	-webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;}
+#at-expanded-menu-service-list-container > li.at3winsvc_twitter {
+	-webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+}
+#at-expanded-menu-service-list-container > li.at3winsvc_linkedin {
+	-webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
+}
+#at-expanded-menu-service-list-container > li.at3winsvc_wechat {
+	-webkit-box-ordinal-group: 5;
+        -ms-flex-order: 4;
+            order: 4;
+}
+#at-expanded-menu-service-list-container > li.at3winsvc_tencentqq {
+	-webkit-box-ordinal-group: 6;
+        -ms-flex-order: 5;
+            order: 5;
+}
+#at-expanded-menu-service-list-container > li.at3winsvc_sinaweibo {
+	-webkit-box-ordinal-group: 7;
+        -ms-flex-order: 6;
+            order: 6;
+}
+#at-expanded-menu-service-list-container > li.at3winsvc_douban {
+	-webkit-box-ordinal-group: 8;
+        -ms-flex-order: 7;
+            order: 7;
+}
+#at-expanded-menu-service-list-container > li.at3winsvc_qzone {
+	-webkit-box-ordinal-group: 9;
+        -ms-flex-order: 8;
+            order: 8;
+}
+#at-expanded-menu-service-list-container > li.at3winsvc_more {
+	-webkit-box-ordinal-group: 10;
+        -ms-flex-order: 9;
+            order: 9;
+}
+
+#at-expanded-menu-host .at-expanded-menu-service-list.border-before:before {
+	position: absolute !important;
+	margin-left: 0 !important;
+}
+
+img[data-src] {
+  visibility: hidden;
+}
+
+/* EXPOSED FILTERS */
+.views-exposed-form #edit-field-description-value-wrapper {
+  display: none;
+}

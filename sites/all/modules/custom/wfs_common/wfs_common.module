@@ -1,0 +1,532 @@
+<?php
+/**
+ * @file
+ * Code for the wfs_common module.
+ */
+
+/**
+ * Implements hook_menu_alter().
+ */
+function wfs_common_menu_alter(&$items) {
+  $items['node']['page callback'] = 'wfs_common_empty_front_page_callback';
+}
+
+/**
+ * Implements hook_language_switch_links_alter().
+ */
+function wfs_common_empty_front_page_callback() {
+  drupal_set_title('');
+  return array();
+}
+
+/**
+ * Custom submit handler.
+ */
+function wfs_common_language_switch_links_alter(array &$links, $type, $path) {
+  if (isset($links['en']['title'])) {
+    $links['en']['title'] = 'en';
+  }
+  if (isset($links['zh-hant']['title'])) {
+    $links['zh-hant']['title'] = '中文';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wfs_common_theme() {
+  $theme = array();
+
+  $base = array(
+    'path' => drupal_get_path('module', 'wfs_common') . '/theme',
+  );
+
+  $theme['wfs_common_add_this_button'] = array(
+    'template' => 'wfs-common-add-this-button',
+    'variables' => array(),
+  ) + $base;
+
+  return $theme;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function wfs_common_menu() {
+
+  $items['page-404'] = array(
+    'type' => MENU_NORMAL_ITEM,
+    'title' => t('Page not found'),
+    'page callback' => 'wfs_common_special_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'),
+  );
+
+  $items['page-403'] = array(
+    'type' => MENU_NORMAL_ITEM,
+    'title' => t('403 Forbidden'),
+    'page callback' => 'wfs_common_special_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+/**
+ * Page callback.
+ */
+function wfs_common_special_page() {
+  return '';
+}
+
+/**
+* Implementation of hook_form_alter()
+*/
+function wfs_common_form_alter(&$form, &$form_state, $form_id) {
+  // Add placeholder for Search
+  if ($form_id == 'search_block_form') {
+    $form['search_block_form']['#attributes']['placeholder'] = t('Search');
+  }
+
+  if ($form_id == 'menu_edit_item') {
+    // Field QR code only for WeChat.
+    if ($form['link_title']['#default_value'] != 'WeChat') {
+      unset($form['menu_fields']['fields']['qr_code']);
+    }
+  }
+
+  if ($form_id == 'bean_form') {
+    // Access FALSE.
+    $form['title']['#access'] = 
+    $form['view_mode']['#access'] = 
+    $form['revision']['#access'] = 
+    $form['revision']['is_new_revision']['#default_value'] = FALSE;
+  }
+
+  if ($form_id == 'views_exposed_form') {
+    // Events exposed filters.
+    $filters = array(
+      'field_category_tid',
+      'field_province_text_value',
+      'field_type_tid',
+      'title',
+      'field_title_value',
+      'field_do_tid'
+    );
+
+    // Set placeholders.
+    foreach ($filters as $key => $filter) {
+      $info_data = 'filter-' . $filter;
+
+      if (isset($form[$filter]['#type']) && $form[$filter]['#type'] == 'select') {
+        $form[$filter]['#options']['All'] = $form['#info'][$info_data]['label'];
+      }
+      else if (isset($form[$filter]['#type']) && $form[$filter]['#type'] == 'textfield') {
+        $form[$filter]['#attributes']['placeholder'] = $form['#info'][$info_data]['label'];
+      }
+      
+      if (isset($form['#info'][$info_data]['label'])) {
+        unset($form['#info'][$info_data]['label']);
+      }
+    }
+
+    // Events view.
+    if ($form['#id'] == 'views-exposed-form-events-page') {
+      // Create custom date filter.
+      drupal_add_css('#edit-date-filter-wrapper { display: none }', array('type' => 'inline'));
+      $form['#attached']['js'][] = array(
+        'type' => 'file',
+        'data' => drupal_get_path('module','wfs_common') . '/js/wfs_common_exposed_filters.js',
+      );
+      $month_names = date_month_names();
+      $range_years = date_range_years($form['date_filter']['value']['#date_year_range']);
+      $range_years_all = array();
+      for ($i= $range_years[0]; $i <= $range_years[1]; $i++) { 
+        $range_years_all[] = $i;
+      }
+      $date_filter_custom_ops = array(
+        'All' => t($form['#info']['filter-date_filter']['label'])
+      );
+      foreach ($range_years_all as $key_year => $year) {
+        foreach ($month_names as $key_month => $month) {
+          if (!empty($key_month)) {
+            $date_filter_custom_ops[$key_month . '_' . $year] = $month . '/' . $year;
+          }
+        }
+      }
+      $form['date_filter_custom'] = array(
+        '#type' => 'select', 
+        '#options' => $date_filter_custom_ops
+      );
+
+      // Create widget from new form item and place it as a second element.
+      $new_form_info = array(
+        'filter-field_province_text_value' => $form['#info']['filter-field_province_text_value'],
+        'filter-date_filter_custom' => array('value' => 'date_filter_custom'),
+        'filter-field_category_tid' => $form['#info']['filter-field_category_tid'],
+        'filter-field_type_tid' => $form['#info']['filter-field_type_tid'],
+        'filter-title' => $form['#info']['filter-title']
+      );
+      $diff = wfs_common_array_recursive_diff($form['#info'], $new_form_info);
+      $form['#info'] = array_merge($new_form_info, $diff);
+    }
+  }
+
+  if (in_array($form_id, array('webform_client_form_5', 'webform_client_form_72'))) {
+    $form['#validate'][] = 'wfs_common_webform_client_form_validate';
+  }
+
+  if ($form_id == 'system_site_information_settings') {
+    $form['map_pdf_en_fid'] = array(
+      '#title' => t('Map PDF') . ' (EN)',
+      '#type' => 'managed_file',
+      '#description' => t('PDF file for download from map page.'),
+      '#default_value' => variable_get('map_pdf_en_fid', ''),
+      '#upload_location' => 'public://map-pdf/',
+    );
+    $form['map_pdf_ch_fid'] = array(
+      '#title' => t('Map PDF') . ' (CN)',
+      '#type' => 'managed_file',
+      '#description' => t('PDF file for download from map page.'),
+      '#default_value' => variable_get('map_pdf_ch_fid', ''),
+      '#upload_location' => 'public://map-pdf/',
+    );
+
+    $form['#submit'][] = 'wfs_common_system_site_information_settings_form_submit';
+
+    return system_settings_form($form);
+  }
+}
+
+function wfs_common_system_site_information_settings_form_submit($form, &$form_state) {
+  if (!empty($form_state['values']['map_pdf_en_fid'])) {
+    $file = file_load($form_state['values']['map_pdf_en_fid']);
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+    file_usage_add($file, 'wfs_common', 'wfs_common', $file->fid);
+  }
+  if (!empty($form_state['values']['map_pdf_ch_fid'])) {
+    $file = file_load($form_state['values']['map_pdf_ch_fid']);
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+    file_usage_add($file, 'wfs_common', 'wfs_common', $file->fid);
+  }
+}
+
+/**
+ * Custom validation for webform.
+ *
+ */
+function wfs_common_webform_client_form_validate($form, &$form_state) {
+  if (strlen($form_state['values']['submitted']['name']) < 3 || strlen($form_state['values']['submitted']['name']) > 50) {
+    form_set_error('submitted[name]', t('Name need contain from 3 to 50 symbols.'));
+  }
+
+  $clean_code = preg_replace('/[^a-zA-Z0-9]/', '', $form_state['values']['submitted']['name']);
+  if (strlen($clean_code) != strlen($form_state['values']['submitted']['name'])) {
+    form_set_error('submitted[name]', t('Name need contain letters or numbers.'));
+  }
+}
+
+/**
+ * Array recursive diff.
+ *
+ * @param array $aArray1
+ * @param array $aArray2
+ */
+function wfs_common_array_recursive_diff($aArray1, $aArray2) {
+  $aReturn = array();
+
+  foreach ($aArray1 as $mKey => $mValue) {
+    if (array_key_exists($mKey, $aArray2)) {
+      if (is_array($mValue)) {
+        $aRecursiveDiff = wfs_common_array_recursive_diff($mValue, $aArray2[$mKey]);
+        if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; }
+      } else {
+        if ($mValue != $aArray2[$mKey]) {
+          $aReturn[$mKey] = $mValue;
+        }
+      }
+    } else {
+      $aReturn[$mKey] = $mValue;
+    }
+  }
+  return $aReturn;
+} 
+
+/**
+ * Implements hook_TYPE_alter().
+ *
+ * @param array $options
+ *   $options contains an array with configurations settings for used in the
+ *   creation of the markup. The following elements may be in here.
+ *
+ *   - '#entity_type': The entity type this markup is define when called by a
+ *                     field.
+ *   - '#entity': Is the entity object when called by a field.
+ *   - '#display': Is always defined and provide all the formatter
+ *                 configuration.
+ *   - '#url': The link to the entity when the entity has a url.
+ */
+function wfs_common_addthis_markup_options_alter(&$options) {
+  if (!empty($options['#entity']->field_link[LANGUAGE_NONE][0]['url'])) {
+    $options['#url'] = $options['#entity']->field_link[LANGUAGE_NONE][0]['url'];
+  }
+
+  // Change share url for newsletters.
+  if (!empty($options['#entity']->type) && $options['#entity']->type == 'newsletter_detail') {
+    $options['#url'] = empty($options['#entity']->field_file[LANGUAGE_NONE][0]['uri']) ? $options['#url'] : file_create_url($options['#entity']->field_file[LANGUAGE_NONE][0]['uri']);
+  }
+}
+
+/**
+ * Implements hook_TYPE_alter().
+ *
+ * @param array $markup
+ *   $markup contains an array with the structure of the addthis markup.
+ */
+function wfs_common_addthis_markup_alter(&$markup) {
+  // Change share button template.
+  $markup[0] = theme('wfs_common_add_this_button');
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function wfs_common_entity_view_alter(&$build, $type) {
+  if ($type == 'paragraphs_item' && !isset($build['field_link']) && isset($build['field_share'])) {
+    $build['field_share']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_page_alter().
+ */
+function wfs_common_page_alter(&$page) {
+  drupal_add_js(drupal_get_path('module', 'wfs_common') . '/js/wfs_common_load_images.js', array('type' => 'file', 'scope' => 'footer'));
+}
+
+/**
+ * Implements hook_cron().
+ */
+function wfs_common_cron() {
+  ctools_include('wfs_common.help', 'wfs_common');
+  // Parse from youku.
+  wfs_common_youku_parse();
+}
+
+/**
+ * Export wineries form.
+ */
+function wfs_common_export_wineries_form($form, &$form_state) {
+  $form['button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Export wineries'),
+  );
+
+  return $form;
+}
+
+/**
+ * Submit handler for the export wineries form.
+ */
+function wfs_common_export_wineries_form_submit(&$form, &$form_state) {
+  global $language;
+
+  $wineries_nids = db_select('node', 'n')
+    ->fields('n', array('nid'))
+    ->condition('n.type', 'winery')
+    ->condition('n.language', $language->language)
+    ->execute()
+    ->fetchAll();
+  
+  if (!empty($wineries_nids)) {
+    ctools_include('wfs_common.help', 'wfs_common');
+
+    $wineries = array();
+    foreach ($wineries_nids as $key => $winery) {
+      $wineries[] = node_load($winery->nid);
+    }
+
+    include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
+    $fileObject = new PHPExcel();
+  
+    // Check index active list.
+    $fileObject->setActiveSheetIndex(0); 
+    // Get active list.
+    $sheet = $fileObject->getActiveSheet();
+    // List name.
+    $sheet->setTitle(t('Wineries'));
+
+    $style_default = array(
+      'alignment' => array(
+        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+        'vertical' => PHPExcel_Style_Alignment::VERTICAL_TOP,
+      )
+    );
+    $sheet->getDefaultStyle()->applyFromArray($style_default);
+    $sheet->getDefaultStyle()->getAlignment()->setWrapText(true); 
+  
+    foreach ($wineries as $key => $winery) {
+      $col = 'A';
+
+      $sheet->SetCellValue($col . ($key + 2), $winery->title);
+      $sheet->SetCellValue($col . '1', strtoupper(t('Winery name')));
+      $sheet->getStyle($col . '1')->getFont()->setBold(true);
+
+      $col++;
+      if (!empty($winery->field_do[LANGUAGE_NONE][0]['tid'])) {
+        $sheet->SetCellValue($col . ($key + 2), taxonomy_term_load($winery->field_do[LANGUAGE_NONE][0]['tid'])->name);
+      }
+      $sheet->SetCellValue($col . '1', strtoupper(t('DO')));
+      $sheet->getStyle($col . '1')->getFont()->setBold(true);
+
+      $col++;
+      if (!empty($winery->field_presentation[LANGUAGE_NONE][0]['value'])) {
+        $sheet->SetCellValue($col . ($key + 2), strip_tags($winery->field_presentation[LANGUAGE_NONE][0]['value']));
+      }
+      $sheet->SetCellValue($col . '1', strtoupper(t('Presentation')));
+      $sheet->getStyle($col . '1')->getFont()->setBold(true);
+    }
+
+    // Brands.
+    $col = 'D';
+    $sheet->SetCellValue($col . '1', strtoupper(t('Brands')));
+    $sheet->getStyle($col . '1')->getFont()->setBold(true);
+    $next_field_col = $start_col = ++$col;
+
+    foreach ($wineries as $key => $winery) {
+      $col = $start_col;
+
+      if (!empty($winery->field_brands_section[LANGUAGE_NONE][0]['value'])) {
+        $brands_pid = $winery->field_brands_section[LANGUAGE_NONE][0]['value'];
+        $brands_items = entity_load('paragraphs_item', array($brands_pid))[$brands_pid]->field_brands_items[LANGUAGE_NONE];
+
+        if ($next_field_col < wfs_common_increment($inc = $start_col, count($brands_items) * 2)) {
+          $next_field_col =  wfs_common_increment($inc = $start_col, count($brands_items) * 2);
+        }
+
+        foreach ($brands_items as $key2 => $brand_item) {
+
+          $brand_pid = $brand_item['value'];
+          $brand_item = entity_load('paragraphs_item', array($brand_pid))[$brand_pid];
+    
+    
+          if (!empty($brand_item->field_title[LANGUAGE_NONE][0]["value"])) {
+            $sheet->SetCellValue($col . ($key + 2), $brand_item->field_title[LANGUAGE_NONE][0]["value"]);
+            $sheet->SetCellValue($col . '1', t('Title'));
+          }
+    
+          $col++;
+          if (!empty($brand_item->field_description[LANGUAGE_NONE][0]["value"])) {
+            $sheet->SetCellValue($col . ($key + 2), strip_tags($brand_item->field_description[LANGUAGE_NONE][0]["value"]));
+            $sheet->SetCellValue($col . '1', t('Description'));
+          }
+
+          $col++;
+        }
+      }
+    }
+
+    // Note.
+    $col = $next_field_col;
+    $sheet->SetCellValue($col . '1', strtoupper(t('Note')));
+    $sheet->getStyle($col . '1')->getFont()->setBold(true);
+    $next_field_col = $start_col = $col;
+
+    foreach ($wineries as $key => $winery) {
+      $col = $start_col;
+
+      if (!empty($winery->field_text[LANGUAGE_NONE][0]["value"])) {
+        $sheet->SetCellValue($col . ($key + 2), strip_tags($winery->field_text[LANGUAGE_NONE][0]["value"]));
+      }
+    }
+    $next_field_col++;
+
+    // Contact of winery.
+    $col = $next_field_col;
+    $sheet->SetCellValue($col . '1', strtoupper(t('Contact of winery')));
+    $sheet->getStyle($col . '1')->getFont()->setBold(true);
+    $next_field_col = $start_col = ++$col;
+
+    foreach ($wineries as $key => $winery) {
+      $col = $start_col;
+
+      if (!empty($winery->field_winery_contact[LANGUAGE_NONE][0]['value'])) {
+        $winery_contact_pid = $winery->field_winery_contact[LANGUAGE_NONE][0]['value'];
+        $items = entity_load('paragraphs_item', array($winery_contact_pid))[$winery_contact_pid]->field_items[LANGUAGE_NONE];
+
+        if ($next_field_col < wfs_common_increment($inc = $start_col, count($items))) {
+          $next_field_col =  wfs_common_increment($inc = $start_col, count($items));
+        }
+
+        foreach ($items as $key2 => $item) {
+
+          $item_pid = $item['value'];
+          $item_item = entity_load('paragraphs_item', array($item_pid))[$item_pid];
+    
+          if (!empty($item_item->field_value[LANGUAGE_NONE][0]["value"])) {
+            $sheet->SetCellValue($col . ($key + 2), $item_item->field_value[LANGUAGE_NONE][0]["value"]);
+          }
+          if (!empty($item_item->field_label[LANGUAGE_NONE][0]["value"])) {
+            $sheet->SetCellValue($col . '1', $item_item->field_label[LANGUAGE_NONE][0]["value"]);
+          }
+
+          $col++;
+        }
+      }
+    }
+
+
+    // Contact of importers.
+    $col = $next_field_col;
+    $sheet->SetCellValue($col . '1', strtoupper(t('Contact of importers')));
+    $sheet->getStyle($col . '1')->getFont()->setBold(true);
+    $next_field_col = $start_col = ++$col;
+
+    foreach ($wineries as $key => $winery) {
+      $col = $start_col;
+
+      if (!empty($winery->field_importers_contacts[LANGUAGE_NONE][0]['value'])) {
+        $importers_contacts_pid = $winery->field_importers_contacts[LANGUAGE_NONE][0]['value'];
+        $importers_contacts_items = entity_load('paragraphs_item', array($importers_contacts_pid))[$importers_contacts_pid]->field_importers_contacts_items[LANGUAGE_NONE];
+
+        foreach ($importers_contacts_items as $key2 => $importers_contacts_item) {
+
+          $contacts_items_pid = $importers_contacts_item['value'];
+          $importer_contact_items = entity_load('paragraphs_item', array($contacts_items_pid))[$contacts_items_pid]->field_items[LANGUAGE_NONE];
+          
+          foreach ($importer_contact_items as $key3 => $importer_contact_item) {
+            $importer_contact_item_pid = $importer_contact_item['value'];
+            $contact_item = entity_load('paragraphs_item', array($importer_contact_item_pid))[$importer_contact_item_pid];
+
+            if (!empty($contact_item->field_value[LANGUAGE_NONE][0]["value"])) {
+              $sheet->SetCellValue($col . ($key + 2), $contact_item->field_value[LANGUAGE_NONE][0]["value"]);
+            }
+            if (!empty($contact_item->field_label[LANGUAGE_NONE][0]["value"])) {
+              $sheet->SetCellValue($col . '1', $contact_item->field_label[LANGUAGE_NONE][0]["value"]);
+            }
+  
+            $col++;
+          }
+        }
+      }
+    }
+
+    $filename = 'wineries-list';
+
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+    header('Cache-Control: max-age=0');
+
+    $objWriter = PHPExcel_IOFactory::createWriter($fileObject, 'Excel2007');
+    ob_end_clean();
+    $objWriter->save('php://output');
+
+    drupal_exit();
+  }
+  else {
+    drupal_set_message(t('Wineries not found.'));
+  }
+}

@@ -1,0 +1,7 @@
+.messages-block .messages.confirm {
+  display: none;
+}
+
+#user-register-form .form-actions .form-item-legal {
+  margin-bottom: 20px;
+}

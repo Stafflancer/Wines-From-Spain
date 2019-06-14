@@ -1,0 +1,17 @@
+name = WFS Views
+description = For views.
+core = 7.x
+package = WFS
+version = 7.x-1.0
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = content
+features[views_view][] = events
+features[views_view][] = map
+features[views_view][] = news
+features[views_view][] = newsletters
+features[views_view][] = social_feeds
+features[views_view][] = wineries
+features_exclude[dependencies][ctools] = ctools
+project path = sites/all/modules/features

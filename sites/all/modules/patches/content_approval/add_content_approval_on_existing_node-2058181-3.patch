@@ -1,0 +1,95 @@
+diff --git a/content_approval.module b/content_approval.module
+index aa6bfb3..fb92001 100644
+--- a/content_approval.module
++++ b/content_approval.module
+@@ -154,7 +154,22 @@ function content_approval_form_alter(&$form, &$form_state, $form_id) {
+       // Add callback functions to process the case of 'skip publishing approval'
+       // permission.
+       $node = $form['#node'];
+-      if (empty($node->nid) && !user_access("skip $node->type content approval prior their publication")) {
++      $need_approval = TRUE;
++      if (property_exists($node, 'nid')) {
++        if (isset($node->{CONTENT_APPROVAL_FIELD_NAME}[LANGUAGE_NONE][0]['value'])) {
++          if (!$node->{CONTENT_APPROVAL_FIELD_NAME}[LANGUAGE_NONE][0]['value']) {
++            $need_approval = FALSE;
++          }
++        }
++        else {
++          $need_approval = FALSE;
++        }
++      }
++      if (
++        $need_approval
++        && !user_access('administer nodes')
++        && !user_access("skip $node->type content approval prior their publication")
++      ) {
+         $form['#validate'][] = 'content_approval_node_form_ante_submit';
+         $form['actions']['submit']['#submit'][] = 'content_approval_node_form_post_submit';        
+       }
+diff --git a/content_approval_field/content_approval_field.js b/content_approval_field/content_approval_field.js
+new file mode 100644
+index 0000000..adad378
+--- /dev/null
++++ b/content_approval_field/content_approval_field.js
+@@ -0,0 +1,18 @@
++(function ($) {
++  Drupal.behaviors.content_approval_field_node_edit_FieldsetSummary = {
++    attach: function (context) {
++      // node edit form case
++      $('fieldset.node-edit-form-content_approval', context).drupalSetSummary(function (context) {
++        var value = $('.form-item-field-content-approval-und-0-value input:checked').val();
++        var out = "Doesn't need approval prior publication";
++        if (value) {
++          out = "Need approval prior publication";
++        }
++        return Drupal.t('@summary', {
++          '@summary': out
++        });
++      });
++    }
++  };
++
++})(jQuery);
+diff --git a/content_approval_field/content_approval_field.module b/content_approval_field/content_approval_field.module
+index 060e59a..017f139 100644
+--- a/content_approval_field/content_approval_field.module
++++ b/content_approval_field/content_approval_field.module
+@@ -38,3 +38,38 @@ function content_approval_field_field_widget_info() {
+     ),
+   );
+ }
++
++/**
++ * Implements hook_field_widget_form().
++ */
++function content_approval_field_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
++
++  if ($instance['widget']['type'] == 'content_approval' && user_access('administer nodes')) {
++
++    $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : 0;
++
++    $element = array(
++      '#type' => 'fieldset',
++      '#collapsible' => TRUE,
++      '#collapsed' => TRUE,
++      '#group' => 'additional_settings',
++      '#attributes' => array(
++        'class' => array('node-edit-form-content_approval'),
++      ),
++      '#attached' => array(
++        'js' => array(
++          drupal_get_path('module', 'content_approval_field') . '/content_approval_field.js',
++        ),
++      ),
++    ) + $element;
++
++    $element['value'] = array(
++      '#type' => 'checkbox',
++      '#title' => t('Need approval prior publication'),
++      '#default_value' => $value,
++      '#description' => t("If checked this content will be set to unpublished if edited by users which doesn't have the 'skip content approval' permission."),
++    );
++  }
++
++  return $element;
++}

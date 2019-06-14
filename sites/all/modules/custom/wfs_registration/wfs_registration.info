@@ -1,0 +1,4 @@
+name = WFS Registration Module
+description = WFS Registration Module
+core = 7.x
+package = Custom
