@@ -70,6 +70,15 @@ function wfs_common_menu() {
     'access arguments' => array('access content'),
   );
 
+  $items['export-winery/%'] = array(
+    'title' => 'Export winery',
+    'page callback' => 'wfs_common_export_winery',
+    'access callback' => TRUE,
+    'page arguments' => array(1),
+    'file' => 'wfs_common.admin.inc',
+    'file path' => drupal_get_path('module', 'wfs_common') . '/includes',
+  );
+
   return $items;
 }
 
@@ -84,6 +93,14 @@ function wfs_common_special_page() {
 * Implementation of hook_form_alter()
 */
 function wfs_common_form_alter(&$form, &$form_state, $form_id) {
+  // Change FC add new item labels.
+  if (!empty($form['field_fc_importers_contacts'][LANGUAGE_NONE]['add_more']['#value'])) {
+    $form['field_fc_importers_contacts'][LANGUAGE_NONE]['add_more']['#value'] = t('Add importer');
+  }
+  if (!empty($form['field_fc_brands'][LANGUAGE_NONE]['add_more']['#value'])) {
+    $form['field_fc_brands'][LANGUAGE_NONE]['add_more']['#value'] = t('Add brand');
+  }
+
   // Add placeholder for Search
   if ($form_id == 'search_block_form') {
     $form['search_block_form']['#attributes']['placeholder'] = t('Search');
@@ -105,6 +122,135 @@ function wfs_common_form_alter(&$form, &$form_state, $form_id) {
   }
 
   if ($form_id == 'views_exposed_form') {
+    $form['#attached']['js'][] = array(
+      'type' => 'file',
+      'data' => drupal_get_path('module','wfs_common') . '/js/wfs_common_exposed_filters.js',
+    );
+
+    // Events view.
+    if ($form['#id'] == 'views-exposed-form-events-page') {
+      $query = drupal_get_query_parameters();
+      $query['show'] = 'blocks';
+      unset($query['page']);
+
+      $options = array(
+        'query' => $query
+      );
+
+      $form['#prefix'] = '<div class="show-type">';
+      $form['#prefix'] .= '<a href="' . url('events', $options) . '" class="blocks"></a>';
+      $options['query']['show'] = 'list';
+      $form['#prefix'] .= '<a href="' . url('events', $options) . '" class="list"></a>';
+      $form['#prefix'] .= '</div>';
+
+      $form['show'] = array(
+        '#type' => 'hidden',
+        '#default_value' => empty($_GET['show']) ? '' : $_GET['show']
+      );
+
+      // Create custom date filter.
+      drupal_add_css('#edit-date-filter-wrapper { display: none }', array('type' => 'inline'));
+
+      $month_names = date_month_names();
+      // $range_years = date_range_years($form['date_filter']['value']['#date_year_range']);
+      // $range_years_all = array();
+      // for ($i= $range_years[0]; $i <= $range_years[1]; $i++) { 
+      //   $range_years_all[] = $i;
+      // }
+      $date_filter_custom_ops = array(
+        'All' => t('Year-Month') //t($form['#info']['filter-date_filter']['label'])
+      );
+
+      // Do task:
+      // Can we have something automatic that adds the month/year of the events in the menu? 
+      // Meaning if no event for one month, this month is not showing.
+      global $language;
+
+      $query = db_select('node', 'n');
+      $query->innerJoin('field_data_field_date', 'fd', 'fd.entity_id = n.nid');
+      $query->fields('fd', array('field_date_value'));
+      $query->condition('n.type', array('event', 'official_event', 'do_event'), 'IN');
+      $query->condition('n.status', 1);
+      $query->condition('n.language', $language->language);
+      $query->orderBy('fd.field_date_value', 'ASC');
+      $events = $query->execute()->fetchAll();
+
+      if (!empty($events)) {
+        foreach ($events as $key => $value) {
+          $date = strtotime($value->field_date_value);
+
+          $year = date('Y', $date);
+          $month = date('n', $date);
+
+          $date_filter_custom_ops[$month . '_' . $year] = $year . '-' . $month_names[$month];
+        }
+      }
+
+      // foreach ($range_years_all as $key_year => $year) {
+      //   foreach ($month_names as $key_month => $month) {
+      //     if (!empty($key_month)) {
+      //       // Do task:
+      //       // Event date menu: remove everything before 2018.11.
+      //       if ($year == 2018 && $key_month < 11) {
+      //         # code...
+      //       }
+      //       // Add date option.
+      //       else  {
+      //         $date_filter_custom_ops[$key_month . '_' . $year] = $year . '-' . $month;
+      //       }
+      //     }
+      //   }
+      // }
+      $form['date_filter_custom'] = array(
+        '#type' => 'select', 
+        '#options' => $date_filter_custom_ops
+      );
+
+      // Create widget from new form item and place it as a second element.
+      $new_form_info = array(
+        'filter-field_province_text_value' => $form['#info']['filter-field_province_text_value'],
+        'filter-date_filter_custom' => array('value' => 'date_filter_custom'),
+        'filter-field_category_tid' => $form['#info']['filter-field_category_tid'],
+        'filter-field_type_tid' => $form['#info']['filter-field_type_tid'],
+        'filter-title' => $form['#info']['filter-title']
+      );
+      $diff = wfs_common_array_recursive_diff($form['#info'], $new_form_info);
+      $form['#info'] = array_merge($new_form_info, $diff);
+    }
+
+    // 70 Designations of Origin view.
+    if ($form['#id'] == 'views-exposed-form-70-designations-of-origin-block') {
+      global $language;
+      ctools_include('wfs_common.help', 'wfs_common');
+
+      $letters['All'] = t('A-Z');
+      foreach (range('a', 'z') as $letter) {
+        // if ($language->language == 'en') {
+          $letters[$letter] = strtoupper($letter);
+        // }
+        // else {
+        //   $ch_letter = wfs_common_get_chinese_letter_by_en($letter);
+        //   $letters[$ch_letter] = strtoupper($ch_letter);
+        // }
+      }
+
+      $form['a_z'] = array(
+        '#type' => 'select',
+        '#options' => $letters,
+        '#weight' => -1
+      );
+
+      // Create widget from new form item and place it as a second element.
+      $new_form_info = array(
+        'filter-a_z' => array('value' => 'a_z'),
+        'filter-title' => $form['#info']['filter-title']
+      );
+      $diff = wfs_common_array_recursive_diff($form['#info'], $new_form_info);
+      $form['#info'] = array_merge($new_form_info, $diff);
+
+      drupal_add_css('#edit-title-1-wrapper { display: none }', array('type' => 'inline'));
+    }
+
     // Events exposed filters.
     $filters = array(
       'field_category_tid',
@@ -112,7 +258,7 @@ function wfs_common_form_alter(&$form, &$form_state, $form_id) {
       'field_type_tid',
       'title',
       'field_title_value',
-      'field_do_tid'
+      'field_do_tid',
     );
 
     // Set placeholders.
@@ -129,47 +275,6 @@ function wfs_common_form_alter(&$form, &$form_state, $form_id) {
       if (isset($form['#info'][$info_data]['label'])) {
         unset($form['#info'][$info_data]['label']);
       }
-    }
-
-    // Events view.
-    if ($form['#id'] == 'views-exposed-form-events-page') {
-      // Create custom date filter.
-      drupal_add_css('#edit-date-filter-wrapper { display: none }', array('type' => 'inline'));
-      $form['#attached']['js'][] = array(
-        'type' => 'file',
-        'data' => drupal_get_path('module','wfs_common') . '/js/wfs_common_exposed_filters.js',
-      );
-      $month_names = date_month_names();
-      $range_years = date_range_years($form['date_filter']['value']['#date_year_range']);
-      $range_years_all = array();
-      for ($i= $range_years[0]; $i <= $range_years[1]; $i++) { 
-        $range_years_all[] = $i;
-      }
-      $date_filter_custom_ops = array(
-        'All' => t($form['#info']['filter-date_filter']['label'])
-      );
-      foreach ($range_years_all as $key_year => $year) {
-        foreach ($month_names as $key_month => $month) {
-          if (!empty($key_month)) {
-            $date_filter_custom_ops[$key_month . '_' . $year] = $month . '/' . $year;
-          }
-        }
-      }
-      $form['date_filter_custom'] = array(
-        '#type' => 'select', 
-        '#options' => $date_filter_custom_ops
-      );
-
-      // Create widget from new form item and place it as a second element.
-      $new_form_info = array(
-        'filter-field_province_text_value' => $form['#info']['filter-field_province_text_value'],
-        'filter-date_filter_custom' => array('value' => 'date_filter_custom'),
-        'filter-field_category_tid' => $form['#info']['filter-field_category_tid'],
-        'filter-field_type_tid' => $form['#info']['filter-field_type_tid'],
-        'filter-title' => $form['#info']['filter-title']
-      );
-      $diff = wfs_common_array_recursive_diff($form['#info'], $new_form_info);
-      $form['#info'] = array_merge($new_form_info, $diff);
     }
   }
 
@@ -196,6 +301,40 @@ function wfs_common_form_alter(&$form, &$form_state, $form_id) {
     $form['#submit'][] = 'wfs_common_system_site_information_settings_form_submit';
 
     return system_settings_form($form);
+  }
+
+  if ($form_id == 'user_profile_form') {
+    $form['#attached']['css'][] = array(
+      'type' => 'file',
+      'data' => libraries_get_path('intl-tel-input') . '/build/css/intlTelInput.min.css',
+    );
+    $form['#attached']['js'][] = array(
+      'type' => 'file',
+      'data' => libraries_get_path('intl-tel-input') . '/build/js/intlTelInput.min.js',
+    );
+    $form['#attached']['js'][] = array(
+      'type' => 'file',
+      'data' => libraries_get_path('intl-tel-input') . '/build/js/utils.js',
+    );
+
+    // drupal_add_css(libraries_get_path('intl-tel-input') . '/build/css/intlTelInput.min.css', array('type' => 'file'));
+    // drupal_add_js(libraries_get_path('intl-tel-input') . '/build/js/intlTelInput.js', array('type' => 'file', 'scope' => 'footer'));
+    // drupal_add_js(libraries_get_path('intl-tel-input') . '/build/js/utils.js', array('type' => 'file', 'scope' => 'footer'));
+    drupal_add_js('jQuery(document).ready(function () { 
+      var input = document.querySelector("#edit-field-phone-und-0-value");
+      window.intlTelInput(input, {
+        customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+          return "";
+        },
+        // nationalMode: true,
+        formatOnDisplay: true,
+        onlyCountries: ["es", "cn"],
+      });
+    });', array(
+      'type' => 'inline',
+      'scope' => 'footer',
+      'weight' => 5,
+    ));
   }
 }
 
@@ -304,7 +443,10 @@ function wfs_common_entity_view_alter(&$build, $type) {
  * Implements hook_page_alter().
  */
 function wfs_common_page_alter(&$page) {
+  drupal_add_js(drupal_get_path('module', 'wfs_common') . '/js/wfs_common.js', array('type' => 'file', 'scope' => 'footer'));
   drupal_add_js(drupal_get_path('module', 'wfs_common') . '/js/wfs_common_load_images.js', array('type' => 'file', 'scope' => 'footer'));
+
+  drupal_add_css(drupal_get_path('module', 'wfs_common') . '/css/wfs_common.css', array('type' => 'file', 'scope' => 'footer'));
 }
 
 /**
@@ -314,219 +456,49 @@ function wfs_common_cron() {
   ctools_include('wfs_common.help', 'wfs_common');
   // Parse from youku.
   wfs_common_youku_parse();
-}
-
-/**
- * Export wineries form.
- */
-function wfs_common_export_wineries_form($form, &$form_state) {
-  $form['button'] = array(
-    '#type' => 'submit',
-    '#value' => t('Export wineries'),
-  );
-
-  return $form;
-}
-
-/**
- * Submit handler for the export wineries form.
- */
-function wfs_common_export_wineries_form_submit(&$form, &$form_state) {
-  global $language;
-
-  $wineries_nids = db_select('node', 'n')
-    ->fields('n', array('nid'))
-    ->condition('n.type', 'winery')
-    ->condition('n.language', $language->language)
-    ->execute()
-    ->fetchAll();
   
-  if (!empty($wineries_nids)) {
+  // // Update events stiky.
+  // wfs_common_update_events();
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function wfs_common_preprocess_html(&$variables) {
+  global $user;
+
+  if (!empty($user->roles[5])) {
+    $variables['classes_array'][] = 'user-role-registered';
+  }
+}
+
+/**
+ * Implements hook_views_pre_build ()
+ */
+function wfs_common_views_pre_build(&$view) {
+  if ($view->name == 'events' 
+    && $view->current_display == 'page' 
+    && !empty($_GET['show']) 
+    && $_GET['show'] == 'list') {
+    $view->items_per_page = 11;
+    $view->display_handler->set_option('css_class', 'show-type-list');
+  }
+}
+
+/**
+ * Implements hook_node_submit().
+ */
+function wfs_common_node_submit($node, $form, &$form_state) {
+  if (in_array($node->type, array('event', 'official_event', 'do_event'))) {
     ctools_include('wfs_common.help', 'wfs_common');
 
-    $wineries = array();
-    foreach ($wineries_nids as $key => $winery) {
-      $wineries[] = node_load($winery->nid);
+    $event_date = $node->field_date[LANGUAGE_NONE][0]['value'];
+
+    if ((wfs_common_compare_dates($event_date, date("Y-m-d 00:00:00")) <= 0) && !$node->sticky) {
+      $node->sticky = 1;
     }
-
-    include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
-    $fileObject = new PHPExcel();
-  
-    // Check index active list.
-    $fileObject->setActiveSheetIndex(0); 
-    // Get active list.
-    $sheet = $fileObject->getActiveSheet();
-    // List name.
-    $sheet->setTitle(t('Wineries'));
-
-    $style_default = array(
-      'alignment' => array(
-        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-        'vertical' => PHPExcel_Style_Alignment::VERTICAL_TOP,
-      )
-    );
-    $sheet->getDefaultStyle()->applyFromArray($style_default);
-    $sheet->getDefaultStyle()->getAlignment()->setWrapText(true); 
-  
-    foreach ($wineries as $key => $winery) {
-      $col = 'A';
-
-      $sheet->SetCellValue($col . ($key + 2), $winery->title);
-      $sheet->SetCellValue($col . '1', strtoupper(t('Winery name')));
-      $sheet->getStyle($col . '1')->getFont()->setBold(true);
-
-      $col++;
-      if (!empty($winery->field_do[LANGUAGE_NONE][0]['tid'])) {
-        $sheet->SetCellValue($col . ($key + 2), taxonomy_term_load($winery->field_do[LANGUAGE_NONE][0]['tid'])->name);
-      }
-      $sheet->SetCellValue($col . '1', strtoupper(t('DO')));
-      $sheet->getStyle($col . '1')->getFont()->setBold(true);
-
-      $col++;
-      if (!empty($winery->field_presentation[LANGUAGE_NONE][0]['value'])) {
-        $sheet->SetCellValue($col . ($key + 2), strip_tags($winery->field_presentation[LANGUAGE_NONE][0]['value']));
-      }
-      $sheet->SetCellValue($col . '1', strtoupper(t('Presentation')));
-      $sheet->getStyle($col . '1')->getFont()->setBold(true);
+    elseif ((wfs_common_compare_dates($event_date, date("Y-m-d 00:00:00")) > 0) && $event->sticky) {
+      $node->sticky = 0;
     }
-
-    // Brands.
-    $col = 'D';
-    $sheet->SetCellValue($col . '1', strtoupper(t('Brands')));
-    $sheet->getStyle($col . '1')->getFont()->setBold(true);
-    $next_field_col = $start_col = ++$col;
-
-    foreach ($wineries as $key => $winery) {
-      $col = $start_col;
-
-      if (!empty($winery->field_brands_section[LANGUAGE_NONE][0]['value'])) {
-        $brands_pid = $winery->field_brands_section[LANGUAGE_NONE][0]['value'];
-        $brands_items = entity_load('paragraphs_item', array($brands_pid))[$brands_pid]->field_brands_items[LANGUAGE_NONE];
-
-        if ($next_field_col < wfs_common_increment($inc = $start_col, count($brands_items) * 2)) {
-          $next_field_col =  wfs_common_increment($inc = $start_col, count($brands_items) * 2);
-        }
-
-        foreach ($brands_items as $key2 => $brand_item) {
-
-          $brand_pid = $brand_item['value'];
-          $brand_item = entity_load('paragraphs_item', array($brand_pid))[$brand_pid];
-    
-    
-          if (!empty($brand_item->field_title[LANGUAGE_NONE][0]["value"])) {
-            $sheet->SetCellValue($col . ($key + 2), $brand_item->field_title[LANGUAGE_NONE][0]["value"]);
-            $sheet->SetCellValue($col . '1', t('Title'));
-          }
-    
-          $col++;
-          if (!empty($brand_item->field_description[LANGUAGE_NONE][0]["value"])) {
-            $sheet->SetCellValue($col . ($key + 2), strip_tags($brand_item->field_description[LANGUAGE_NONE][0]["value"]));
-            $sheet->SetCellValue($col . '1', t('Description'));
-          }
-
-          $col++;
-        }
-      }
-    }
-
-    // Note.
-    $col = $next_field_col;
-    $sheet->SetCellValue($col . '1', strtoupper(t('Note')));
-    $sheet->getStyle($col . '1')->getFont()->setBold(true);
-    $next_field_col = $start_col = $col;
-
-    foreach ($wineries as $key => $winery) {
-      $col = $start_col;
-
-      if (!empty($winery->field_text[LANGUAGE_NONE][0]["value"])) {
-        $sheet->SetCellValue($col . ($key + 2), strip_tags($winery->field_text[LANGUAGE_NONE][0]["value"]));
-      }
-    }
-    $next_field_col++;
-
-    // Contact of winery.
-    $col = $next_field_col;
-    $sheet->SetCellValue($col . '1', strtoupper(t('Contact of winery')));
-    $sheet->getStyle($col . '1')->getFont()->setBold(true);
-    $next_field_col = $start_col = ++$col;
-
-    foreach ($wineries as $key => $winery) {
-      $col = $start_col;
-
-      if (!empty($winery->field_winery_contact[LANGUAGE_NONE][0]['value'])) {
-        $winery_contact_pid = $winery->field_winery_contact[LANGUAGE_NONE][0]['value'];
-        $items = entity_load('paragraphs_item', array($winery_contact_pid))[$winery_contact_pid]->field_items[LANGUAGE_NONE];
-
-        if ($next_field_col < wfs_common_increment($inc = $start_col, count($items))) {
-          $next_field_col =  wfs_common_increment($inc = $start_col, count($items));
-        }
-
-        foreach ($items as $key2 => $item) {
-
-          $item_pid = $item['value'];
-          $item_item = entity_load('paragraphs_item', array($item_pid))[$item_pid];
-    
-          if (!empty($item_item->field_value[LANGUAGE_NONE][0]["value"])) {
-            $sheet->SetCellValue($col . ($key + 2), $item_item->field_value[LANGUAGE_NONE][0]["value"]);
-          }
-          if (!empty($item_item->field_label[LANGUAGE_NONE][0]["value"])) {
-            $sheet->SetCellValue($col . '1', $item_item->field_label[LANGUAGE_NONE][0]["value"]);
-          }
-
-          $col++;
-        }
-      }
-    }
-
-
-    // Contact of importers.
-    $col = $next_field_col;
-    $sheet->SetCellValue($col . '1', strtoupper(t('Contact of importers')));
-    $sheet->getStyle($col . '1')->getFont()->setBold(true);
-    $next_field_col = $start_col = ++$col;
-
-    foreach ($wineries as $key => $winery) {
-      $col = $start_col;
-
-      if (!empty($winery->field_importers_contacts[LANGUAGE_NONE][0]['value'])) {
-        $importers_contacts_pid = $winery->field_importers_contacts[LANGUAGE_NONE][0]['value'];
-        $importers_contacts_items = entity_load('paragraphs_item', array($importers_contacts_pid))[$importers_contacts_pid]->field_importers_contacts_items[LANGUAGE_NONE];
-
-        foreach ($importers_contacts_items as $key2 => $importers_contacts_item) {
-
-          $contacts_items_pid = $importers_contacts_item['value'];
-          $importer_contact_items = entity_load('paragraphs_item', array($contacts_items_pid))[$contacts_items_pid]->field_items[LANGUAGE_NONE];
-          
-          foreach ($importer_contact_items as $key3 => $importer_contact_item) {
-            $importer_contact_item_pid = $importer_contact_item['value'];
-            $contact_item = entity_load('paragraphs_item', array($importer_contact_item_pid))[$importer_contact_item_pid];
-
-            if (!empty($contact_item->field_value[LANGUAGE_NONE][0]["value"])) {
-              $sheet->SetCellValue($col . ($key + 2), $contact_item->field_value[LANGUAGE_NONE][0]["value"]);
-            }
-            if (!empty($contact_item->field_label[LANGUAGE_NONE][0]["value"])) {
-              $sheet->SetCellValue($col . '1', $contact_item->field_label[LANGUAGE_NONE][0]["value"]);
-            }
-  
-            $col++;
-          }
-        }
-      }
-    }
-
-    $filename = 'wineries-list';
-
-    header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
-    header('Cache-Control: max-age=0');
-
-    $objWriter = PHPExcel_IOFactory::createWriter($fileObject, 'Excel2007');
-    ob_end_clean();
-    $objWriter->save('php://output');
-
-    drupal_exit();
-  }
-  else {
-    drupal_set_message(t('Wineries not found.'));
   }
 }

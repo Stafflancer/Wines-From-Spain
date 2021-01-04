@@ -4,6 +4,140 @@
  * Code for the wfs_registration module.
  */
 
+define('WFS_LOGO_IMG', '<img src="http://www.winesfromspain.org.cn/sites/all/themes/wfs/img/wfs-logo.jpg" width="175" height="80">');
+
+/**
+ * Send mail.
+ *
+ * @param string $email_type
+ * @param string $mail_to
+ * @param array $tokens
+ * @param array $replaces
+ */
+function wfs_registration_send_mail($email_type, $mail_to, $tokens, $replaces) {
+  ctools_include('wfs_registration.help', 'wfs_registration');
+
+  global $language;
+
+  // Mail from.
+  $mail_from = variable_get('site_mail', '');
+
+  // Subject.
+  $subject = wfs_registration_user_mail_text($email_type . '_subject', NULL, array(), FALSE);
+  // Body.
+  $body = nl2br(wfs_registration_user_mail_text($email_type . '_body', NULL, array(), FALSE));
+
+  if (!empty($tokens) && !empty($replaces) && (count($tokens) == count($replaces))) {
+    $subject = str_replace($tokens, $replaces, $subject);
+    $body = str_replace($tokens, $replaces, $body);
+  }
+
+  // Send email about reason.
+  $message = drupal_mail('wfs_registration', 'default', $mail_to, $language->language, [
+    'subject' => $subject,
+    'body'    => $body,
+    'headers' => ['Content-Type' => 'text/html; charset=utf-8']
+  ], $mail_from);
+
+  // Only if sending was not canceled.
+  if ($message['send']) {
+    watchdog('wfs_registration', '<pre>' . print_r($message, true) . '</pre>');
+  }
+  else {
+    watchdog('wfs_registration', 'Message was not sent!');
+  }
+}
+
+/**
+ * Custom form.
+ */
+function wfs_registration_submit_winery_form($form, &$form_state) {
+  $node = node_load(arg(1));
+
+  if ($node->sticky) {
+    $form['legal'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('I hereby declare that this winery is authorising company to Icex as indicated in <a href="@link" target="_blank">@link</a>', array('@link' => 'https://www.icex.es/icex/es/navegacion-principal/que-es-icex/si-autoriza-exporta/index.html')),
+    );
+  }
+
+  $form['accept_submitted'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I understand and accept that the information submitted will be verified with the winery.'),
+  );
+
+  $form['submit_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  
+  return $form;
+}
+
+/**
+ * Custom form submit.
+ */
+function wfs_registration_submit_winery_form_submit($form, &$form_state) {
+  ctools_include('wfs_registration.help', 'wfs_registration');
+
+  $node = node_load(arg(1));
+
+  $required_msgs = array();
+
+  // Check legal.
+  if (isset($form_state['values']['legal']) && $form_state['values']['legal'] === 0) {
+    $required_msgs[] = t('Please check the agreement.');
+  }
+
+  // Check accept submitted.
+  if (isset($form_state['values']['accept_submitted']) && $form_state['values']['accept_submitted'] === 0) {
+    $required_msgs[] = t('You need accept that the information submitted will be verified with the winery.');
+  }
+
+  // if (empty($node->field_image[LANGUAGE_NONE][0]['uri'])
+  //   || (strlen($node->field_image[LANGUAGE_NONE][0]['uri']) != strlen(str_replace('public://default_images', '', $node->field_image[LANGUAGE_NONE][0]['uri'])))) {
+  //   $required_msgs[] = t('Image is required.');
+  // }
+
+  // Image.
+  wfs_registration_check4presence_value($required_msgs, $node->field_image, 'image', 'field_image');
+  // Logo.
+  wfs_registration_check4presence_value($required_msgs, $node->field_logo, 'image', 'field_logo');
+  // Title.
+  wfs_registration_check4presence_value($required_msgs, $node->field_node_title, 'default', 'field_node_title');
+  // DO.
+  wfs_registration_check4presence_value($required_msgs, $node->field_do, 'default', 'field_do');
+  // Presentation. 
+  wfs_registration_check4presence_value($required_msgs, $node->field_presentation, 'default', 'field_presentation');
+  // Winery contact.
+  wfs_registration_check4presence_value($required_msgs, $node->field_fc_winery_contact, 'field_collection_item', 'field_fc_winery_contact');
+  // Importers contacts.
+  wfs_registration_check4presence_value($required_msgs, $node->field_fc_importers_contacts, 'field_collection_item', 'field_fc_importers_contacts');
+  // Brands.
+  wfs_registration_check4presence_value($required_msgs, $node->field_fc_brands, 'field_collection_item', 'field_fc_brands');
+  
+
+  if (!empty($required_msgs)) {
+    foreach ($required_msgs as $key => $msg) {
+      drupal_set_message($msg, 'warning');
+    }
+    return;
+  }
+
+  $node->for_need_approve = 1;
+  // Not show legal again.
+  $node->sticky = 0;
+
+  // Send emails.
+  wfs_registration_send_mails_after_node_insert_or_submit($node);
+
+  // Status: Waits for approve.
+  $node->field_status[LANGUAGE_NONE][0]['value'] = 'waits_approve';
+  node_save($node);
+
+  drupal_set_message(t('Your information has been received. It will be revised to verify its adequacy with the target of the campaign and verified with the winery. You will be notified once it has been approved/rejected. Thank you.'), 'status');
+}
+
 /**
  * Implements hook_mail().
  *
@@ -84,6 +218,44 @@ function wfs_registration_form_system_site_information_settings_alter(&$form, &$
     '#rows' => 15
   );
 
+  // Confirmation email when user SUBMIT information.
+  $form['email_after_user_submitet_information'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Confirmation email when user SUBMIT information'),
+    '#group' => 'email',
+    // '#description' => $email_token_help,
+  );
+  $form['email_after_user_submitet_information']['email_after_user_submitet_information_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => wfs_registration_user_mail_text('email_after_user_submitet_information_subject', NULL, array(), FALSE),
+  );
+  $form['email_after_user_submitet_information']['email_after_user_submitet_information_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => wfs_registration_user_mail_text('email_after_user_submitet_information_body', NULL, array(), FALSE),
+    '#rows' => 15
+  );
+
+  // Confirmation email when user information has been published.
+  $form['email_after_user_information_published'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Confirmation email when user information has been published'),
+    '#group' => 'email',
+    // '#description' => $email_token_help,
+  );
+  $form['email_after_user_information_published']['email_after_user_information_published_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => wfs_registration_user_mail_text('email_after_user_information_published_subject', NULL, array(), FALSE),
+  );
+  $form['email_after_user_information_published']['email_after_user_information_published_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => wfs_registration_user_mail_text('email_after_user_information_published_body', NULL, array(), FALSE),
+    '#rows' => 15
+  );
+
   // These email tokens are shared for all settings, so just define
   // the list once to help ensure they stay in sync.
   unset($available_vars[2]);
@@ -91,7 +263,7 @@ function wfs_registration_form_system_site_information_settings_alter(&$form, &$
 
   $form['email_need_approve'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Need approve email'),
+    '#title' => t('Need approve email (admin)'),
     '#group' => 'email',
     '#description' => $email_token_help,
   );
@@ -138,15 +310,47 @@ function wfs_registration_form_system_site_information_settings_alter(&$form, &$
 * Implementation of hook_form_FORM_ID_alter()
 */
 function wfs_registration_form_alter(&$form, &$form_state, $form_id) {
+  if (in_array($form_id, array('event_node_form', 'official_event_node_form', 'do_event_node_form'))) {
+    if ($form_id == 'event_node_form') {
+      $form['field_type'][LANGUAGE_NONE]['#default_value'] = 2;
+      $form['field_link']['#access'] = FALSE;
+    }
+    if ($form_id == 'official_event_node_form') {
+      $form['field_type'][LANGUAGE_NONE]['#default_value'] = 1;
+    }
+    if ($form_id == 'do_event_node_form') {
+      $form['field_type'][LANGUAGE_NONE]['#default_value'] = 88;
+    }
+
+    $form['field_type']['#access'] = FALSE;
+  }
+
   switch ($form_id) {
     case 'winery_node_form':
     case 'news_node_form':
     case 'event_node_form':
+      // Show how the data will be displayed.
+      $page_type = ($form_id == 'news_node_form') ? 'news' : 'events';
+      if (!empty($form['#groups']['group_info'])) {
+        $markup = '<div style="padding: 15px; background: #0000001c;">';
+        $markup .= '<h3>' . l(t('On list page:'), 'events', array('attributes' => array('target' => '_blank'))) . '</h3>';
+        $markup .= '<div>' . '<img src="/' . drupal_get_path('module', 'wfs_registration') . '/img/' . $page_type . '-list-ex.jpg' . '">' . '</div><br>';
+        $markup .= '<h3>' . t('On inner page:') . '</h3>';
+        $markup .= '<div>' . '<img src="/' . drupal_get_path('module', 'wfs_registration') . '/img/' . $page_type . '-page-ex.jpg' . '">' . '</div>';
+        $markup .= '</div>';
+
+        $form['info_test'] = array(
+          '#markup' => $markup
+        );
+        $form['#group_children']['info_test'] = 'group_info';
+      }
+
+      // Hide fields.
       $form['field_status']['#access'] = FALSE;
+      $form['field_node_title']['#access'] = FALSE;
 
       if (user_has_role(3) 
         && $form['nid']['#value'] != NULL 
-        && !empty($form['#node']->field_status[LANGUAGE_NONE][0]['value'])
         && $form['#node']->field_status[LANGUAGE_NONE][0]['value'] == 'waits_approve') {
         $author = user_load($form['uid']['#value']);
 
@@ -170,26 +374,53 @@ function wfs_registration_form_alter(&$form, &$form_state, $form_id) {
       }
 
       if (user_has_role(5) 
-      && $form_id == 'winery_node_form'
-      && $form['nid']['#value'] == NULL) {
-        $form['actions']['legal'] = array(
-          '#type' => 'checkbox',
-          '#title' => t('I hereby declare that this winery is authorising company to Icex as per indicated in <a href="@link" target="_blank">@link</a>', array('@link' => 'https://www.icex.es/icex/es/navegacion-principal/que-es-icex/si-autoriza-exporta/index.html')),
-          '#weight' => -100
-        );
+          && $form_id == 'winery_node_form') {
+        // $form['actions']['legal'] = array(
+        //   '#type' => 'checkbox',
+        //   '#title' => t('I hereby declare that this winery is authorising company to Icex as per indicated in <a href="@link" target="_blank">@link</a>', array('@link' => 'https://www.icex.es/icex/es/navegacion-principal/que-es-icex/si-autoriza-exporta/index.html')),
+        //   '#weight' => -100
+        // );
       
-        $form['#validate'][] = 'wfs_registration_form_user_register_validate';
+        // $form['#validate'][] = 'wfs_registration_form_user_register_validate';
+
+        if ($form['nid']['#value'] !== NULL) {
+          drupal_goto(drupal_get_path_alias('node/' . $form['nid']['#value']));
+        }
+        else if (isset($_GET['create'])) {
+          ctools_include('wfs_registration.help', 'wfs_registration');
+          wfs_registration_create_winery();
+        }
+        elseif (isset($_GET['translation'])) {
+          drupal_add_js('(function($, Drupal) {
+
+            $("body").css("display", "none");
+            $("form#winery-node-form").submit();
+
+          }(jQuery, Drupal));', array(
+            'type' => 'inline',
+            'scope' => 'footer',
+            'weight' => 5,
+          ));
+        }
+      }
+
+      // If user has role "registered".
+      if (user_has_role(5)) {
+        // Change submit button value.
+        $form['actions']['submit']['#value'] = t('Submit');
       }
       break;
   }
 }
 
+/**
+* Implementation of hook_node_submit()
+*/
 function wfs_registration_node_submit($node, $form, &$form_state) {
   switch ($node->type) {
     case 'winery':
     case 'news':
     case 'event':
-      global $language;
       global $base_url;
 
       $values = $form_state['values'];
@@ -199,17 +430,13 @@ function wfs_registration_node_submit($node, $form, &$form_state) {
 
       if (user_has_role(3)) {
         if (!empty($values['send_reason']) && $values['send_reason']) {
-          ctools_include('wfs_registration.help', 'wfs_registration');
+
           // Send reason.
           $author = user_load($node->uid);
           $reason = $form_state['values']['reason'];
           
           $mail_to = $author->mail;
 
-          // Subject.
-          $subject = wfs_registration_user_mail_text('email_reason_subject', NULL, array(), FALSE);
-          // Body.
-          $body = nl2br(wfs_registration_user_mail_text('email_reason_body', NULL, array(), FALSE));
           // Replace tokens.
           $tokens = array(
             '[edit-link]', 
@@ -221,44 +448,43 @@ function wfs_registration_node_submit($node, $form, &$form_state) {
             $node->type,
             nl2br($reason)
           );
-          $subject = str_replace($tokens, $replaces, $subject);
-          $body = str_replace($tokens, $replaces, $body);
 
-          // Send email about reason.
-          $message = drupal_mail('wfs_registration', 'default', $mail_to, $language->language, [
-            'subject' => $subject,
-            'body'    => $body,
-            'headers' => ['Content-Type' => 'text/html; charset=utf-8']
-          ], $mail_from);
-
-          // Only if sending was not canceled.
-          if ($message['send']) {
-            watchdog('wfs_registration', '<pre>' . print_r($message, true) . '</pre>');
-          }
-          else {
-            watchdog('wfs_registration', 'Message was not sent!');
-          }
+          // Send mail with reason.
+          wfs_registration_send_mail('email_reason', $mail_to, $tokens, $replaces);
 
           // Status: Need edit by reason.
           $node->field_status[LANGUAGE_NONE][0]['value'] = 'need_edit';
         }
-
         // Status: Approved.
-        if ($values['status']) {
+        else if ($values['status']) {
+          // Replace tokens.
+          $tokens = array(
+            '[wfs-logo]'
+          );
+          $replaces = array(
+            WFS_LOGO_IMG
+          );
+
+          // Send confirmation email when user information has been published.
+          $author = user_load($node->uid);
+          $mail_to = $author->mail;
+          wfs_registration_send_mail('email_after_user_information_published', $mail_to, $tokens, $replaces);
+
           $node->field_status[LANGUAGE_NONE][0]['value'] = 'approved';
         }
+        // Status: Waits for approve.
+        else if (!$values['status']) {
+          $node->field_status[LANGUAGE_NONE][0]['value'] = 'waits_approve';
+        }
       }
-      elseif (user_has_role(5) && !empty($node->nid) && $node->nid) {
+      elseif (user_has_role(5) && !empty($node->nid) && $node->nid && $node->type != 'winery') {
         ctools_include('wfs_registration.help', 'wfs_registration');
 
-        // Send mail need approve.
-        wfs_registration_send_mail_need_approve($node);
+        wfs_registration_send_mails_after_node_insert_or_submit($node);
 
         // Status: Waits for approve.
         $node->field_status[LANGUAGE_NONE][0]['value'] = 'waits_approve';
       }
-
-      // $form_state['redirect'] = 'user';
       break;
   }
 }
@@ -271,13 +497,34 @@ function wfs_registration_entity_insert($entity, $type) {
     $node = $entity;
 
     switch ($node->type) {
-      case 'winery':
+      // case 'winery':
       case 'news':
       case 'event':
         ctools_include('wfs_registration.help', 'wfs_registration');
 
-        // Send mail need approve.
-        wfs_registration_send_mail_need_approve($node);
+        // Send emails.
+        wfs_registration_send_mails_after_node_insert_or_submit($node);
+        break;
+    }
+  }
+}
+
+/**
+* Implementation of hook_entity_presave()
+*/
+function wfs_registration_entity_presave($entity, $type) {
+  if (user_has_role(5) && $type == 'node') {
+    $node = $entity;
+
+    switch ($node->type) {
+      case 'winery':
+        if (empty($entity->for_need_approve)) {
+          $entity->field_status[LANGUAGE_NONE][0]['value'] = 'editing';
+          if (!empty($entity->field_node_title[LANGUAGE_NONE][0]['value'])) {
+            $entity->title = $entity->field_node_title[LANGUAGE_NONE][0]['value'];
+          }
+          $entity->status = 0;
+        }
         break;
     }
   }
@@ -290,7 +537,7 @@ function wfs_registration_form_user_register_form_alter(&$form, &$form_state, $f
   drupal_set_title(t('Create a new account'));
 
   // Name.
-  $form["account"]["name"]["#title"] = t('Contact name');
+  $form["account"]["name"]["#title"] = t('Contact name (will be your username)');
   unset($form["account"]["name"]["#description"]);
   // Email.
   $form["account"]["mail"]["#title"] = t('Your email');
@@ -318,7 +565,7 @@ function wfs_registration_form_user_register_form_alter(&$form, &$form_state, $f
 
   $form['actions']['legal'] = array(
     '#type' => 'checkbox',
-    '#title' => t('If the expert review of the recommendations for this high-quality wine promotion project is judged to be inconsistent with the overall purpose of the project, my account and data will not be approved and uploaded, I understand and accept this.'),
+    '#title' => t('I understand and accept that my account and data may not be approved/uploaded if they are deemed not fully compliant with the overall focus of the campaign on Quality wines only, as assessed by the experts offering advise to said campaign. I understand and accept that the campaign management has final word on this subject.'),
     '#weight' => -100
   );
 
@@ -352,7 +599,9 @@ function wfs_registration_form_user_register_submit(&$form, &$form_state) {
  */
 function wfs_registration_form_user_register_second_submit(&$form, &$form_state) {
   drupal_get_messages();
-  drupal_set_message(t('Thank you for signing up.<br><br>Your request is pending review. Please wait.'), 'confirm');
+  // drupal_set_message(t('Thank you for signing up.<br><br>Your request is pending review. Please wait.'), 'confirm');
+  drupal_set_message(t('Thank you for signing-up.<br><br>Please check your email for further instructions.'), 'confirm');
+  
 
   $form_state['redirect'] = 'user/register';
 }
@@ -440,7 +689,7 @@ function wfs_registration_menu_local_tasks_alter(&$data, $router_item, $root_pat
 */
 function wfs_registration_node_access($node, $op, $account) {
   // Deny access for registered user if he already have winery.
-  if ($op == 'create' && $node == 'winery') {
+  if ($op == 'create' && $node == 'winery' && arg(2) != 'translate' && empty($_GET['translation'])) {
     global $user;
 
     if (!empty($user->roles[5])) {
@@ -484,5 +733,59 @@ function wfs_registration_mail_alter(&$message) {
   
     $message['subject'] = token_replace($subject, $account, array('language' => $language , 'callback' => 'user_mail_tokens', 'sanitize' => FALSE, 'clear' => TRUE));
     $message['body'][] = token_replace($body, $account, array('language' => $language , 'callback' => 'user_mail_tokens', 'sanitize' => FALSE, 'clear' => TRUE));
+  }
+}
+
+/**
+ * Perform alterations on the VBO form before it is rendered.
+ *
+ * Usually, if a module wanted to alter the VBO form through hook_form_alter(),
+ * it would need to duplicate the views form checks from
+ * views_bulk_operations_form_alter(), while making sure that the hook
+ * runs after VBO's hook (by increasing the weight of the altering module's
+ * system entry). In order to reduce that complexity, VBO provides this hook.
+ *
+ * @param $form
+ *  A step of the VBO form to be altered.
+ * @param $form_state
+ *  Form state. Contains the name of the current step in $form_state['step'].
+ * @param $vbo
+ *   The VBO views field. Contains a reference to the view in $vbo->view.
+ */
+function wfs_registration_views_bulk_operations_form_alter(&$form, &$form_state, $vbo) {
+  if ($form['#id'] == 'views-form-content-page'
+    && isset($form_state['step'])
+    && $form_state['step'] == 'views_bulk_operations_confirm_form') {
+    
+    switch ($form_state['input']['operation']) {
+      case 'action::node_publish_action':
+        $form['actions']['submit']['#submit'][] = 'wfs_registration_views_bulk_operations_form_node_publish_action_submit';
+        break;
+      case 'action::node_unpublish_action':
+        $form['actions']['submit']['#submit'][] = 'wfs_registration_views_bulk_operations_form_node_unpublish_action_submit';
+        break;
+    }
+  }
+}
+
+/**
+ * Submit handler for node publish action.
+ */
+function wfs_registration_views_bulk_operations_form_node_publish_action_submit($form, &$form_state) {
+  foreach ($form_state['selection'] as $nid) {
+    $node = node_load($nid);
+    $node->field_status[LANGUAGE_NONE][0]['value'] = 'approved';
+    node_save($node);
+  }
+}
+
+/**
+ * Submit handler for node unpublish action.
+ */
+function wfs_registration_views_bulk_operations_form_node_unpublish_action_submit($form, &$form_state) {
+  foreach ($form_state['selection'] as $nid) {
+    $node = node_load($nid);
+    $node->field_status[LANGUAGE_NONE][0]['value'] = 'waits_approve';
+    node_save($node);
   }
 }

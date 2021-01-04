@@ -1,0 +1,11 @@
+.user-role-registered .field-type-image div[class*="-title"],
+.user-role-registered .field-type-image div[class*="-alt"],
+.field-type-text-long .filter-wrapper,
+.node-winery-form .field-name-field-winery-contact,
+.node-winery-form .field-name-field-importers-contacts,
+.node-winery-form .field-name-field-brands-section,
+.field-name-field-hide,
+.not-logged-in .tabs a[href*="user/password"],
+.page-node-translate.user-role-registered #block-system-user-menu a[href*="node/add/winery"] {
+	display: none;
+}

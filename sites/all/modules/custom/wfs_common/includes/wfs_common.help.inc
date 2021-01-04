@@ -139,3 +139,119 @@ function wfs_common_increment($val, $increment = 2) {
 
   return $val;
 }
+
+/**
+ * Update events.
+ *
+ * @return
+ */
+function wfs_common_update_events() {
+  global $language;
+
+  $query = db_select('node', 'n');
+  $query->innerJoin('field_data_field_date', 'fd', 'fd.entity_id = n.nid');
+  $query->fields('fd', array('field_date_value'));
+  $query->fields('n', array('nid', 'sticky'));
+  $query->condition('n.type', array('event', 'official_event', 'do_event'), 'IN');
+  $query->condition('n.status', 1);
+  $query->condition('n.language', $language->language);
+  $events = $query->execute()->fetchAll();
+
+  if (!empty($events)) {
+    foreach ($events as $event) {
+      // if ((strtotime($event->field_date_value) > REQUEST_TIME) && !$event->sticky) {
+      if ((wfs_common_compare_dates($event->field_date_value, date("Y-m-d 00:00:00")) <= 0) && !$event->sticky) {
+        db_update('node')
+          ->fields(array('sticky' => 1))
+          ->condition('nid', $event->nid)
+          ->execute();
+      }
+      // elseif ((strtotime($event->field_date_value) < REQUEST_TIME) && $event->sticky) {
+      elseif ((wfs_common_compare_dates($event->field_date_value, date("Y-m-d 00:00:00")) > 0) && $event->sticky) {
+        db_update('node')
+          ->fields(array('sticky' => 0))
+          ->condition('nid', $event->nid)
+          ->execute();
+      }
+    }
+  }
+}
+
+/**
+ * Compare dates.
+ *
+ * @return
+ */
+function wfs_common_compare_dates($date1, $date2) {
+  $datetime1 = date_create($date1);
+  $datetime2 = date_create($date2);
+  $interval = date_diff($datetime1, $datetime2);
+
+  return $interval->format("%r%a");
+}
+
+/**
+ * Get chinese letter by en.
+ *
+ * @param string $en_letter
+ *
+ * @return string
+ */
+function wfs_common_get_chinese_letter_by_en($en_letter) {
+  switch ($en_letter) {
+    case 'a':
+      return '诶';
+    case 'b':
+      return '比';
+    case 'c':
+      return '西';
+    case 'd':
+      return '迪';
+    case 'e':
+      return '伊';
+    case 'f':
+      return '艾弗';
+    case 'g':
+      return '吉';
+    case 'h':
+      return '艾尺';
+    case 'i':
+      return '艾';
+    case 'j':
+      return '杰';
+    case 'k':
+      return '开';
+    case 'l':
+      return '艾勒';
+    case 'm':
+      return '艾马';
+    case 'n':
+      return '艾娜';
+    case 'o':
+      return '哦';
+    case 'p':
+      return '屁';
+    case 'q':
+      return '吉吾';
+    case 'r':
+      return '艾儿';
+    case 's':
+      return '艾丝';
+    case 't':
+      return '提';
+    case 'u':
+      return '伊吾';
+    case 'v':
+      return '维';
+    case 'w':
+      return '豆贝尔维';
+    case 'x':
+      return '艾克斯';
+    case 'y':
+      return '吾艾';
+    case 'z':
+      return '贼德';
+  }
+
+  return $en_letter;
+}
