@@ -96,6 +96,44 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Field: Bulk operations: Content */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::views_bulk_operations_delete_item' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'log' => 0,
+      ),
+    ),
+    'action::node_publish_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_unpublish_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -438,6 +476,7 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['sorts']['field_date_value']['table'] = 'field_data_field_date';
   $handler->display->display_options['sorts']['field_date_value']['field'] = 'field_date_value';
+  $handler->display->display_options['sorts']['field_date_value']['order'] = 'DESC';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
@@ -456,6 +495,7 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
+    'do_event' => 'do_event',
     'event' => 'event',
     'official_event' => 'official_event',
   );
@@ -594,6 +634,392 @@ function wfs_views_views_default_views() {
     3 => 0,
     4 => 0,
   );
+  $handler->display->display_options['metatags'] = array(
+    'und' => array(
+      'title' => array(
+        'value' => 'Wines and Wineries Events | Wines From Spain',
+        'default' => '[view:title] | [current-page:pager][site:name]',
+      ),
+      'description' => array(
+        'value' => 'Welcom to discover Wines from Spain\'s events and wineries events. If you want to learn the latest events, please register and log in.',
+        'default' => '[view:description]',
+      ),
+      'abstract' => array(
+        'value' => '',
+      ),
+      'keywords' => array(
+        'value' => 'Wines and Wineries Events',
+      ),
+      'robots' => array(
+        'value' => array(
+          'index' => 0,
+          'follow' => 0,
+          'noindex' => 0,
+          'nofollow' => 0,
+          'noarchive' => 0,
+          'nosnippet' => 0,
+          'noodp' => 0,
+          'noydir' => 0,
+          'noimageindex' => 0,
+          'notranslate' => 0,
+        ),
+      ),
+      'news_keywords' => array(
+        'value' => '',
+      ),
+      'standout' => array(
+        'value' => '',
+      ),
+      'rating' => array(
+        'value' => '',
+      ),
+      'referrer' => array(
+        'value' => '',
+      ),
+      'rights' => array(
+        'value' => '',
+      ),
+      'image_src' => array(
+        'value' => '',
+      ),
+      'canonical' => array(
+        'value' => '[view:url]',
+        'default' => '[view:url]',
+      ),
+      'set_cookie' => array(
+        'value' => '',
+      ),
+      'shortlink' => array(
+        'value' => '[current-page:url:unaliased]',
+        'default' => '[current-page:url:unaliased]',
+      ),
+      'original-source' => array(
+        'value' => '',
+      ),
+      'prev' => array(
+        'value' => '',
+      ),
+      'next' => array(
+        'value' => '',
+      ),
+      'content-language' => array(
+        'value' => '',
+      ),
+      'geo.position' => array(
+        'value' => '',
+      ),
+      'geo.placename' => array(
+        'value' => '',
+      ),
+      'geo.region' => array(
+        'value' => '',
+      ),
+      'icbm' => array(
+        'value' => '',
+      ),
+      'refresh' => array(
+        'value' => '',
+      ),
+      'revisit-after' => array(
+        'value' => '',
+        'period' => '',
+      ),
+      'pragma' => array(
+        'value' => '',
+      ),
+      'cache-control' => array(
+        'value' => '',
+      ),
+      'expires' => array(
+        'value' => '',
+      ),
+      'fb:admins' => array(
+        'value' => '',
+      ),
+      'fb:app_id' => array(
+        'value' => '',
+      ),
+      'fb:pages' => array(
+        'value' => '',
+      ),
+      'og:type' => array(
+        'value' => 'article',
+        'default' => 'article',
+      ),
+      'og:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'og:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'og:determiner' => array(
+        'value' => '',
+      ),
+      'og:description' => array(
+        'value' => '',
+      ),
+      'og:updated_time' => array(
+        'value' => '',
+      ),
+      'og:see_also' => array(
+        'value' => '',
+      ),
+      'og:image' => array(
+        'value' => '',
+      ),
+      'og:image:url' => array(
+        'value' => '',
+      ),
+      'og:image:secure_url' => array(
+        'value' => '',
+      ),
+      'og:image:type' => array(
+        'value' => '',
+      ),
+      'og:image:width' => array(
+        'value' => '',
+      ),
+      'og:image:height' => array(
+        'value' => '',
+      ),
+      'og:latitude' => array(
+        'value' => '',
+      ),
+      'og:longitude' => array(
+        'value' => '',
+      ),
+      'og:street_address' => array(
+        'value' => '',
+      ),
+      'og:locality' => array(
+        'value' => '',
+      ),
+      'og:region' => array(
+        'value' => '',
+      ),
+      'og:postal_code' => array(
+        'value' => '',
+      ),
+      'og:country_name' => array(
+        'value' => '',
+      ),
+      'og:email' => array(
+        'value' => '',
+      ),
+      'og:phone_number' => array(
+        'value' => '',
+      ),
+      'og:fax_number' => array(
+        'value' => '',
+      ),
+      'og:locale' => array(
+        'value' => '',
+      ),
+      'og:locale:alternate' => array(
+        'value' => '',
+      ),
+      'article:author' => array(
+        'value' => '',
+      ),
+      'article:publisher' => array(
+        'value' => '',
+      ),
+      'article:section' => array(
+        'value' => '',
+      ),
+      'article:tag' => array(
+        'value' => '',
+      ),
+      'article:published_time' => array(
+        'value' => '',
+      ),
+      'article:modified_time' => array(
+        'value' => '',
+      ),
+      'article:expiration_time' => array(
+        'value' => '',
+      ),
+      'profile:first_name' => array(
+        'value' => '',
+      ),
+      'profile:last_name' => array(
+        'value' => '',
+      ),
+      'profile:username' => array(
+        'value' => '',
+      ),
+      'profile:gender' => array(
+        'value' => '',
+      ),
+      'og:audio' => array(
+        'value' => '',
+      ),
+      'og:audio:secure_url' => array(
+        'value' => '',
+      ),
+      'og:audio:type' => array(
+        'value' => '',
+      ),
+      'book:author' => array(
+        'value' => '',
+      ),
+      'book:isbn' => array(
+        'value' => '',
+      ),
+      'book:release_date' => array(
+        'value' => '',
+      ),
+      'book:tag' => array(
+        'value' => '',
+      ),
+      'og:video:url' => array(
+        'value' => '',
+      ),
+      'og:video:secure_url' => array(
+        'value' => '',
+      ),
+      'og:video:width' => array(
+        'value' => '',
+      ),
+      'og:video:height' => array(
+        'value' => '',
+      ),
+      'og:video:type' => array(
+        'value' => '',
+      ),
+      'video:actor' => array(
+        'value' => '',
+      ),
+      'video:actor:role' => array(
+        'value' => '',
+      ),
+      'video:director' => array(
+        'value' => '',
+      ),
+      'video:writer' => array(
+        'value' => '',
+      ),
+      'video:duration' => array(
+        'value' => '',
+      ),
+      'video:release_date' => array(
+        'value' => '',
+      ),
+      'video:tag' => array(
+        'value' => '',
+      ),
+      'video:series' => array(
+        'value' => '',
+      ),
+      'twitter:card' => array(
+        'value' => 'summary',
+        'default' => 'summary',
+      ),
+      'twitter:creator' => array(
+        'value' => '',
+      ),
+      'twitter:creator:id' => array(
+        'value' => '',
+      ),
+      'twitter:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'twitter:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'twitter:description' => array(
+        'value' => '',
+      ),
+      'twitter:dnt' => array(
+        'value' => '',
+      ),
+      'twitter:image' => array(
+        'value' => '',
+      ),
+      'twitter:image:width' => array(
+        'value' => '',
+      ),
+      'twitter:image:height' => array(
+        'value' => '',
+      ),
+      'twitter:image:alt' => array(
+        'value' => '',
+      ),
+      'twitter:image0' => array(
+        'value' => '',
+      ),
+      'twitter:image1' => array(
+        'value' => '',
+      ),
+      'twitter:image2' => array(
+        'value' => '',
+      ),
+      'twitter:image3' => array(
+        'value' => '',
+      ),
+      'twitter:player' => array(
+        'value' => '',
+      ),
+      'twitter:player:width' => array(
+        'value' => '',
+      ),
+      'twitter:player:height' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream:content_type' => array(
+        'value' => '',
+      ),
+      'twitter:app:country' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:label1' => array(
+        'value' => '',
+      ),
+      'twitter:data1' => array(
+        'value' => '',
+      ),
+      'twitter:label2' => array(
+        'value' => '',
+      ),
+      'twitter:data2' => array(
+        'value' => '',
+      ),
+    ),
+  );
   $handler->display->display_options['path'] = 'events';
 
   /* Display: Block (user events) */
@@ -673,6 +1099,7 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -761,6 +1188,17 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = '<h2>70 Designations of Origin</h2>';
+  $handler->display->display_options['footer']['area']['format'] = 'full_html';
+  /* Footer: Global: View area */
+  $handler->display->display_options['footer']['view']['id'] = 'view';
+  $handler->display->display_options['footer']['view']['table'] = 'views';
+  $handler->display->display_options['footer']['view']['field'] = 'view';
+  $handler->display->display_options['footer']['view']['view_to_insert'] = '70_designations_of_origin:block';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -797,6 +1235,392 @@ function wfs_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['metatags'] = array(
+    'und' => array(
+      'title' => array(
+        'value' => 'Spanish Wines Designations of Origin Map | Wines From Spain',
+        'default' => '[view:title] | [current-page:pager][site:name]',
+      ),
+      'description' => array(
+        'value' => 'Wines from Spain official website shows Spanish wines designations of origin map. It has 70 designations of origin. If you welcome to learn more, welcome to contact us.',
+        'default' => '[view:description]',
+      ),
+      'abstract' => array(
+        'value' => '',
+      ),
+      'keywords' => array(
+        'value' => 'Spanish Wines Designations of Origin Map',
+      ),
+      'robots' => array(
+        'value' => array(
+          'index' => 0,
+          'follow' => 0,
+          'noindex' => 0,
+          'nofollow' => 0,
+          'noarchive' => 0,
+          'nosnippet' => 0,
+          'noodp' => 0,
+          'noydir' => 0,
+          'noimageindex' => 0,
+          'notranslate' => 0,
+        ),
+      ),
+      'news_keywords' => array(
+        'value' => '',
+      ),
+      'standout' => array(
+        'value' => '',
+      ),
+      'rating' => array(
+        'value' => '',
+      ),
+      'referrer' => array(
+        'value' => '',
+      ),
+      'rights' => array(
+        'value' => '',
+      ),
+      'image_src' => array(
+        'value' => '',
+      ),
+      'canonical' => array(
+        'value' => '[view:url]',
+        'default' => '[view:url]',
+      ),
+      'set_cookie' => array(
+        'value' => '',
+      ),
+      'shortlink' => array(
+        'value' => '[current-page:url:unaliased]',
+        'default' => '[current-page:url:unaliased]',
+      ),
+      'original-source' => array(
+        'value' => '',
+      ),
+      'prev' => array(
+        'value' => '',
+      ),
+      'next' => array(
+        'value' => '',
+      ),
+      'content-language' => array(
+        'value' => '',
+      ),
+      'geo.position' => array(
+        'value' => '',
+      ),
+      'geo.placename' => array(
+        'value' => '',
+      ),
+      'geo.region' => array(
+        'value' => '',
+      ),
+      'icbm' => array(
+        'value' => '',
+      ),
+      'refresh' => array(
+        'value' => '',
+      ),
+      'revisit-after' => array(
+        'value' => '',
+        'period' => '',
+      ),
+      'pragma' => array(
+        'value' => '',
+      ),
+      'cache-control' => array(
+        'value' => '',
+      ),
+      'expires' => array(
+        'value' => '',
+      ),
+      'fb:admins' => array(
+        'value' => '',
+      ),
+      'fb:app_id' => array(
+        'value' => '',
+      ),
+      'fb:pages' => array(
+        'value' => '',
+      ),
+      'og:type' => array(
+        'value' => 'article',
+        'default' => 'article',
+      ),
+      'og:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'og:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'og:determiner' => array(
+        'value' => '',
+      ),
+      'og:description' => array(
+        'value' => '',
+      ),
+      'og:updated_time' => array(
+        'value' => '',
+      ),
+      'og:see_also' => array(
+        'value' => '',
+      ),
+      'og:image' => array(
+        'value' => '',
+      ),
+      'og:image:url' => array(
+        'value' => '',
+      ),
+      'og:image:secure_url' => array(
+        'value' => '',
+      ),
+      'og:image:type' => array(
+        'value' => '',
+      ),
+      'og:image:width' => array(
+        'value' => '',
+      ),
+      'og:image:height' => array(
+        'value' => '',
+      ),
+      'og:latitude' => array(
+        'value' => '',
+      ),
+      'og:longitude' => array(
+        'value' => '',
+      ),
+      'og:street_address' => array(
+        'value' => '',
+      ),
+      'og:locality' => array(
+        'value' => '',
+      ),
+      'og:region' => array(
+        'value' => '',
+      ),
+      'og:postal_code' => array(
+        'value' => '',
+      ),
+      'og:country_name' => array(
+        'value' => '',
+      ),
+      'og:email' => array(
+        'value' => '',
+      ),
+      'og:phone_number' => array(
+        'value' => '',
+      ),
+      'og:fax_number' => array(
+        'value' => '',
+      ),
+      'og:locale' => array(
+        'value' => '',
+      ),
+      'og:locale:alternate' => array(
+        'value' => '',
+      ),
+      'article:author' => array(
+        'value' => '',
+      ),
+      'article:publisher' => array(
+        'value' => '',
+      ),
+      'article:section' => array(
+        'value' => '',
+      ),
+      'article:tag' => array(
+        'value' => '',
+      ),
+      'article:published_time' => array(
+        'value' => '',
+      ),
+      'article:modified_time' => array(
+        'value' => '',
+      ),
+      'article:expiration_time' => array(
+        'value' => '',
+      ),
+      'profile:first_name' => array(
+        'value' => '',
+      ),
+      'profile:last_name' => array(
+        'value' => '',
+      ),
+      'profile:username' => array(
+        'value' => '',
+      ),
+      'profile:gender' => array(
+        'value' => '',
+      ),
+      'og:audio' => array(
+        'value' => '',
+      ),
+      'og:audio:secure_url' => array(
+        'value' => '',
+      ),
+      'og:audio:type' => array(
+        'value' => '',
+      ),
+      'book:author' => array(
+        'value' => '',
+      ),
+      'book:isbn' => array(
+        'value' => '',
+      ),
+      'book:release_date' => array(
+        'value' => '',
+      ),
+      'book:tag' => array(
+        'value' => '',
+      ),
+      'og:video:url' => array(
+        'value' => '',
+      ),
+      'og:video:secure_url' => array(
+        'value' => '',
+      ),
+      'og:video:width' => array(
+        'value' => '',
+      ),
+      'og:video:height' => array(
+        'value' => '',
+      ),
+      'og:video:type' => array(
+        'value' => '',
+      ),
+      'video:actor' => array(
+        'value' => '',
+      ),
+      'video:actor:role' => array(
+        'value' => '',
+      ),
+      'video:director' => array(
+        'value' => '',
+      ),
+      'video:writer' => array(
+        'value' => '',
+      ),
+      'video:duration' => array(
+        'value' => '',
+      ),
+      'video:release_date' => array(
+        'value' => '',
+      ),
+      'video:tag' => array(
+        'value' => '',
+      ),
+      'video:series' => array(
+        'value' => '',
+      ),
+      'twitter:card' => array(
+        'value' => 'summary',
+        'default' => 'summary',
+      ),
+      'twitter:creator' => array(
+        'value' => '',
+      ),
+      'twitter:creator:id' => array(
+        'value' => '',
+      ),
+      'twitter:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'twitter:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'twitter:description' => array(
+        'value' => '',
+      ),
+      'twitter:dnt' => array(
+        'value' => '',
+      ),
+      'twitter:image' => array(
+        'value' => '',
+      ),
+      'twitter:image:width' => array(
+        'value' => '',
+      ),
+      'twitter:image:height' => array(
+        'value' => '',
+      ),
+      'twitter:image:alt' => array(
+        'value' => '',
+      ),
+      'twitter:image0' => array(
+        'value' => '',
+      ),
+      'twitter:image1' => array(
+        'value' => '',
+      ),
+      'twitter:image2' => array(
+        'value' => '',
+      ),
+      'twitter:image3' => array(
+        'value' => '',
+      ),
+      'twitter:player' => array(
+        'value' => '',
+      ),
+      'twitter:player:width' => array(
+        'value' => '',
+      ),
+      'twitter:player:height' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream:content_type' => array(
+        'value' => '',
+      ),
+      'twitter:app:country' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:label1' => array(
+        'value' => '',
+      ),
+      'twitter:data1' => array(
+        'value' => '',
+      ),
+      'twitter:label2' => array(
+        'value' => '',
+      ),
+      'twitter:data2' => array(
+        'value' => '',
+      ),
+    ),
+  );
   $handler->display->display_options['path'] = 'map';
   $export['map'] = $view;
 
@@ -928,6 +1752,392 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['metatags'] = array(
+    'und' => array(
+      'title' => array(
+        'value' => 'Spanish Wines\' Latest News | Wines From Spain',
+        'default' => '[view:title] | [current-page:pager][site:name]',
+      ),
+      'description' => array(
+        'value' => 'Welcom to get the latest news about Spanish wines. If you want to learn the latest news, please register and log in.',
+        'default' => '[view:description]',
+      ),
+      'abstract' => array(
+        'value' => '',
+      ),
+      'keywords' => array(
+        'value' => 'Spanish Wines\' Latest News',
+      ),
+      'robots' => array(
+        'value' => array(
+          'index' => 0,
+          'follow' => 0,
+          'noindex' => 0,
+          'nofollow' => 0,
+          'noarchive' => 0,
+          'nosnippet' => 0,
+          'noodp' => 0,
+          'noydir' => 0,
+          'noimageindex' => 0,
+          'notranslate' => 0,
+        ),
+      ),
+      'news_keywords' => array(
+        'value' => '',
+      ),
+      'standout' => array(
+        'value' => '',
+      ),
+      'rating' => array(
+        'value' => '',
+      ),
+      'referrer' => array(
+        'value' => '',
+      ),
+      'rights' => array(
+        'value' => '',
+      ),
+      'image_src' => array(
+        'value' => '',
+      ),
+      'canonical' => array(
+        'value' => '[view:url]',
+        'default' => '[view:url]',
+      ),
+      'set_cookie' => array(
+        'value' => '',
+      ),
+      'shortlink' => array(
+        'value' => '[current-page:url:unaliased]',
+        'default' => '[current-page:url:unaliased]',
+      ),
+      'original-source' => array(
+        'value' => '',
+      ),
+      'prev' => array(
+        'value' => '',
+      ),
+      'next' => array(
+        'value' => '',
+      ),
+      'content-language' => array(
+        'value' => '',
+      ),
+      'geo.position' => array(
+        'value' => '',
+      ),
+      'geo.placename' => array(
+        'value' => '',
+      ),
+      'geo.region' => array(
+        'value' => '',
+      ),
+      'icbm' => array(
+        'value' => '',
+      ),
+      'refresh' => array(
+        'value' => '',
+      ),
+      'revisit-after' => array(
+        'value' => '',
+        'period' => '',
+      ),
+      'pragma' => array(
+        'value' => '',
+      ),
+      'cache-control' => array(
+        'value' => '',
+      ),
+      'expires' => array(
+        'value' => '',
+      ),
+      'fb:admins' => array(
+        'value' => '',
+      ),
+      'fb:app_id' => array(
+        'value' => '',
+      ),
+      'fb:pages' => array(
+        'value' => '',
+      ),
+      'og:type' => array(
+        'value' => 'article',
+        'default' => 'article',
+      ),
+      'og:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'og:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'og:determiner' => array(
+        'value' => '',
+      ),
+      'og:description' => array(
+        'value' => '',
+      ),
+      'og:updated_time' => array(
+        'value' => '',
+      ),
+      'og:see_also' => array(
+        'value' => '',
+      ),
+      'og:image' => array(
+        'value' => '',
+      ),
+      'og:image:url' => array(
+        'value' => '',
+      ),
+      'og:image:secure_url' => array(
+        'value' => '',
+      ),
+      'og:image:type' => array(
+        'value' => '',
+      ),
+      'og:image:width' => array(
+        'value' => '',
+      ),
+      'og:image:height' => array(
+        'value' => '',
+      ),
+      'og:latitude' => array(
+        'value' => '',
+      ),
+      'og:longitude' => array(
+        'value' => '',
+      ),
+      'og:street_address' => array(
+        'value' => '',
+      ),
+      'og:locality' => array(
+        'value' => '',
+      ),
+      'og:region' => array(
+        'value' => '',
+      ),
+      'og:postal_code' => array(
+        'value' => '',
+      ),
+      'og:country_name' => array(
+        'value' => '',
+      ),
+      'og:email' => array(
+        'value' => '',
+      ),
+      'og:phone_number' => array(
+        'value' => '',
+      ),
+      'og:fax_number' => array(
+        'value' => '',
+      ),
+      'og:locale' => array(
+        'value' => '',
+      ),
+      'og:locale:alternate' => array(
+        'value' => '',
+      ),
+      'article:author' => array(
+        'value' => '',
+      ),
+      'article:publisher' => array(
+        'value' => '',
+      ),
+      'article:section' => array(
+        'value' => '',
+      ),
+      'article:tag' => array(
+        'value' => '',
+      ),
+      'article:published_time' => array(
+        'value' => '',
+      ),
+      'article:modified_time' => array(
+        'value' => '',
+      ),
+      'article:expiration_time' => array(
+        'value' => '',
+      ),
+      'profile:first_name' => array(
+        'value' => '',
+      ),
+      'profile:last_name' => array(
+        'value' => '',
+      ),
+      'profile:username' => array(
+        'value' => '',
+      ),
+      'profile:gender' => array(
+        'value' => '',
+      ),
+      'og:audio' => array(
+        'value' => '',
+      ),
+      'og:audio:secure_url' => array(
+        'value' => '',
+      ),
+      'og:audio:type' => array(
+        'value' => '',
+      ),
+      'book:author' => array(
+        'value' => '',
+      ),
+      'book:isbn' => array(
+        'value' => '',
+      ),
+      'book:release_date' => array(
+        'value' => '',
+      ),
+      'book:tag' => array(
+        'value' => '',
+      ),
+      'og:video:url' => array(
+        'value' => '',
+      ),
+      'og:video:secure_url' => array(
+        'value' => '',
+      ),
+      'og:video:width' => array(
+        'value' => '',
+      ),
+      'og:video:height' => array(
+        'value' => '',
+      ),
+      'og:video:type' => array(
+        'value' => '',
+      ),
+      'video:actor' => array(
+        'value' => '',
+      ),
+      'video:actor:role' => array(
+        'value' => '',
+      ),
+      'video:director' => array(
+        'value' => '',
+      ),
+      'video:writer' => array(
+        'value' => '',
+      ),
+      'video:duration' => array(
+        'value' => '',
+      ),
+      'video:release_date' => array(
+        'value' => '',
+      ),
+      'video:tag' => array(
+        'value' => '',
+      ),
+      'video:series' => array(
+        'value' => '',
+      ),
+      'twitter:card' => array(
+        'value' => 'summary',
+        'default' => 'summary',
+      ),
+      'twitter:creator' => array(
+        'value' => '',
+      ),
+      'twitter:creator:id' => array(
+        'value' => '',
+      ),
+      'twitter:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'twitter:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'twitter:description' => array(
+        'value' => '',
+      ),
+      'twitter:dnt' => array(
+        'value' => '',
+      ),
+      'twitter:image' => array(
+        'value' => '',
+      ),
+      'twitter:image:width' => array(
+        'value' => '',
+      ),
+      'twitter:image:height' => array(
+        'value' => '',
+      ),
+      'twitter:image:alt' => array(
+        'value' => '',
+      ),
+      'twitter:image0' => array(
+        'value' => '',
+      ),
+      'twitter:image1' => array(
+        'value' => '',
+      ),
+      'twitter:image2' => array(
+        'value' => '',
+      ),
+      'twitter:image3' => array(
+        'value' => '',
+      ),
+      'twitter:player' => array(
+        'value' => '',
+      ),
+      'twitter:player:width' => array(
+        'value' => '',
+      ),
+      'twitter:player:height' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream:content_type' => array(
+        'value' => '',
+      ),
+      'twitter:app:country' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:label1' => array(
+        'value' => '',
+      ),
+      'twitter:data1' => array(
+        'value' => '',
+      ),
+      'twitter:label2' => array(
+        'value' => '',
+      ),
+      'twitter:data2' => array(
+        'value' => '',
+      ),
+    ),
+  );
   $handler->display->display_options['path'] = 'news';
 
   /* Display: Block (user news) */
@@ -1007,6 +2217,7 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -1135,6 +2346,392 @@ function wfs_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['metatags'] = array(
+    'und' => array(
+      'title' => array(
+        'value' => 'Newsletters | Wines From Spain',
+        'default' => '[view:title] | [current-page:pager][site:name]',
+      ),
+      'description' => array(
+        'value' => '[view:description]',
+        'default' => '[view:description]',
+      ),
+      'abstract' => array(
+        'value' => '',
+      ),
+      'keywords' => array(
+        'value' => 'Newsletters',
+      ),
+      'robots' => array(
+        'value' => array(
+          'index' => 0,
+          'follow' => 0,
+          'noindex' => 0,
+          'nofollow' => 0,
+          'noarchive' => 0,
+          'nosnippet' => 0,
+          'noodp' => 0,
+          'noydir' => 0,
+          'noimageindex' => 0,
+          'notranslate' => 0,
+        ),
+      ),
+      'news_keywords' => array(
+        'value' => '',
+      ),
+      'standout' => array(
+        'value' => '',
+      ),
+      'rating' => array(
+        'value' => '',
+      ),
+      'referrer' => array(
+        'value' => '',
+      ),
+      'rights' => array(
+        'value' => '',
+      ),
+      'image_src' => array(
+        'value' => '',
+      ),
+      'canonical' => array(
+        'value' => '[view:url]',
+        'default' => '[view:url]',
+      ),
+      'set_cookie' => array(
+        'value' => '',
+      ),
+      'shortlink' => array(
+        'value' => '[current-page:url:unaliased]',
+        'default' => '[current-page:url:unaliased]',
+      ),
+      'original-source' => array(
+        'value' => '',
+      ),
+      'prev' => array(
+        'value' => '',
+      ),
+      'next' => array(
+        'value' => '',
+      ),
+      'content-language' => array(
+        'value' => '',
+      ),
+      'geo.position' => array(
+        'value' => '',
+      ),
+      'geo.placename' => array(
+        'value' => '',
+      ),
+      'geo.region' => array(
+        'value' => '',
+      ),
+      'icbm' => array(
+        'value' => '',
+      ),
+      'refresh' => array(
+        'value' => '',
+      ),
+      'revisit-after' => array(
+        'value' => '',
+        'period' => '',
+      ),
+      'pragma' => array(
+        'value' => '',
+      ),
+      'cache-control' => array(
+        'value' => '',
+      ),
+      'expires' => array(
+        'value' => '',
+      ),
+      'fb:admins' => array(
+        'value' => '',
+      ),
+      'fb:app_id' => array(
+        'value' => '',
+      ),
+      'fb:pages' => array(
+        'value' => '',
+      ),
+      'og:type' => array(
+        'value' => 'article',
+        'default' => 'article',
+      ),
+      'og:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'og:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'og:determiner' => array(
+        'value' => '',
+      ),
+      'og:description' => array(
+        'value' => '',
+      ),
+      'og:updated_time' => array(
+        'value' => '',
+      ),
+      'og:see_also' => array(
+        'value' => '',
+      ),
+      'og:image' => array(
+        'value' => '',
+      ),
+      'og:image:url' => array(
+        'value' => '',
+      ),
+      'og:image:secure_url' => array(
+        'value' => '',
+      ),
+      'og:image:type' => array(
+        'value' => '',
+      ),
+      'og:image:width' => array(
+        'value' => '',
+      ),
+      'og:image:height' => array(
+        'value' => '',
+      ),
+      'og:latitude' => array(
+        'value' => '',
+      ),
+      'og:longitude' => array(
+        'value' => '',
+      ),
+      'og:street_address' => array(
+        'value' => '',
+      ),
+      'og:locality' => array(
+        'value' => '',
+      ),
+      'og:region' => array(
+        'value' => '',
+      ),
+      'og:postal_code' => array(
+        'value' => '',
+      ),
+      'og:country_name' => array(
+        'value' => '',
+      ),
+      'og:email' => array(
+        'value' => '',
+      ),
+      'og:phone_number' => array(
+        'value' => '',
+      ),
+      'og:fax_number' => array(
+        'value' => '',
+      ),
+      'og:locale' => array(
+        'value' => '',
+      ),
+      'og:locale:alternate' => array(
+        'value' => '',
+      ),
+      'article:author' => array(
+        'value' => '',
+      ),
+      'article:publisher' => array(
+        'value' => '',
+      ),
+      'article:section' => array(
+        'value' => '',
+      ),
+      'article:tag' => array(
+        'value' => '',
+      ),
+      'article:published_time' => array(
+        'value' => '',
+      ),
+      'article:modified_time' => array(
+        'value' => '',
+      ),
+      'article:expiration_time' => array(
+        'value' => '',
+      ),
+      'profile:first_name' => array(
+        'value' => '',
+      ),
+      'profile:last_name' => array(
+        'value' => '',
+      ),
+      'profile:username' => array(
+        'value' => '',
+      ),
+      'profile:gender' => array(
+        'value' => '',
+      ),
+      'og:audio' => array(
+        'value' => '',
+      ),
+      'og:audio:secure_url' => array(
+        'value' => '',
+      ),
+      'og:audio:type' => array(
+        'value' => '',
+      ),
+      'book:author' => array(
+        'value' => '',
+      ),
+      'book:isbn' => array(
+        'value' => '',
+      ),
+      'book:release_date' => array(
+        'value' => '',
+      ),
+      'book:tag' => array(
+        'value' => '',
+      ),
+      'og:video:url' => array(
+        'value' => '',
+      ),
+      'og:video:secure_url' => array(
+        'value' => '',
+      ),
+      'og:video:width' => array(
+        'value' => '',
+      ),
+      'og:video:height' => array(
+        'value' => '',
+      ),
+      'og:video:type' => array(
+        'value' => '',
+      ),
+      'video:actor' => array(
+        'value' => '',
+      ),
+      'video:actor:role' => array(
+        'value' => '',
+      ),
+      'video:director' => array(
+        'value' => '',
+      ),
+      'video:writer' => array(
+        'value' => '',
+      ),
+      'video:duration' => array(
+        'value' => '',
+      ),
+      'video:release_date' => array(
+        'value' => '',
+      ),
+      'video:tag' => array(
+        'value' => '',
+      ),
+      'video:series' => array(
+        'value' => '',
+      ),
+      'twitter:card' => array(
+        'value' => 'summary',
+        'default' => 'summary',
+      ),
+      'twitter:creator' => array(
+        'value' => '',
+      ),
+      'twitter:creator:id' => array(
+        'value' => '',
+      ),
+      'twitter:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'twitter:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'twitter:description' => array(
+        'value' => '',
+      ),
+      'twitter:dnt' => array(
+        'value' => '',
+      ),
+      'twitter:image' => array(
+        'value' => '',
+      ),
+      'twitter:image:width' => array(
+        'value' => '',
+      ),
+      'twitter:image:height' => array(
+        'value' => '',
+      ),
+      'twitter:image:alt' => array(
+        'value' => '',
+      ),
+      'twitter:image0' => array(
+        'value' => '',
+      ),
+      'twitter:image1' => array(
+        'value' => '',
+      ),
+      'twitter:image2' => array(
+        'value' => '',
+      ),
+      'twitter:image3' => array(
+        'value' => '',
+      ),
+      'twitter:player' => array(
+        'value' => '',
+      ),
+      'twitter:player:width' => array(
+        'value' => '',
+      ),
+      'twitter:player:height' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream:content_type' => array(
+        'value' => '',
+      ),
+      'twitter:app:country' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:label1' => array(
+        'value' => '',
+      ),
+      'twitter:data1' => array(
+        'value' => '',
+      ),
+      'twitter:label2' => array(
+        'value' => '',
+      ),
+      'twitter:data2' => array(
+        'value' => '',
+      ),
+    ),
+  );
   $handler->display->display_options['path'] = 'newsletters';
   $export['newsletters'] = $view;
 
@@ -1157,7 +2754,7 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '9';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '6';
@@ -1228,6 +2825,392 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['metatags'] = array(
+    'und' => array(
+      'title' => array(
+        'value' => 'Wines from Spain Social Feeds | Wines From Spain',
+        'default' => '[view:title] | [current-page:pager][site:name]',
+      ),
+      'description' => array(
+        'value' => 'If you want to know Spanish wines, welcome to social feeds to learn the wines\' information.',
+        'default' => '[view:description]',
+      ),
+      'abstract' => array(
+        'value' => '',
+      ),
+      'keywords' => array(
+        'value' => 'Wines from Spain Social Feeds',
+      ),
+      'robots' => array(
+        'value' => array(
+          'index' => 0,
+          'follow' => 0,
+          'noindex' => 0,
+          'nofollow' => 0,
+          'noarchive' => 0,
+          'nosnippet' => 0,
+          'noodp' => 0,
+          'noydir' => 0,
+          'noimageindex' => 0,
+          'notranslate' => 0,
+        ),
+      ),
+      'news_keywords' => array(
+        'value' => '',
+      ),
+      'standout' => array(
+        'value' => '',
+      ),
+      'rating' => array(
+        'value' => '',
+      ),
+      'referrer' => array(
+        'value' => '',
+      ),
+      'rights' => array(
+        'value' => '',
+      ),
+      'image_src' => array(
+        'value' => '',
+      ),
+      'canonical' => array(
+        'value' => '[view:url]',
+        'default' => '[view:url]',
+      ),
+      'set_cookie' => array(
+        'value' => '',
+      ),
+      'shortlink' => array(
+        'value' => '[current-page:url:unaliased]',
+        'default' => '[current-page:url:unaliased]',
+      ),
+      'original-source' => array(
+        'value' => '',
+      ),
+      'prev' => array(
+        'value' => '',
+      ),
+      'next' => array(
+        'value' => '',
+      ),
+      'content-language' => array(
+        'value' => '',
+      ),
+      'geo.position' => array(
+        'value' => '',
+      ),
+      'geo.placename' => array(
+        'value' => '',
+      ),
+      'geo.region' => array(
+        'value' => '',
+      ),
+      'icbm' => array(
+        'value' => '',
+      ),
+      'refresh' => array(
+        'value' => '',
+      ),
+      'revisit-after' => array(
+        'value' => '',
+        'period' => '',
+      ),
+      'pragma' => array(
+        'value' => '',
+      ),
+      'cache-control' => array(
+        'value' => '',
+      ),
+      'expires' => array(
+        'value' => '',
+      ),
+      'fb:admins' => array(
+        'value' => '',
+      ),
+      'fb:app_id' => array(
+        'value' => '',
+      ),
+      'fb:pages' => array(
+        'value' => '',
+      ),
+      'og:type' => array(
+        'value' => 'article',
+        'default' => 'article',
+      ),
+      'og:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'og:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'og:determiner' => array(
+        'value' => '',
+      ),
+      'og:description' => array(
+        'value' => '',
+      ),
+      'og:updated_time' => array(
+        'value' => '',
+      ),
+      'og:see_also' => array(
+        'value' => '',
+      ),
+      'og:image' => array(
+        'value' => '',
+      ),
+      'og:image:url' => array(
+        'value' => '',
+      ),
+      'og:image:secure_url' => array(
+        'value' => '',
+      ),
+      'og:image:type' => array(
+        'value' => '',
+      ),
+      'og:image:width' => array(
+        'value' => '',
+      ),
+      'og:image:height' => array(
+        'value' => '',
+      ),
+      'og:latitude' => array(
+        'value' => '',
+      ),
+      'og:longitude' => array(
+        'value' => '',
+      ),
+      'og:street_address' => array(
+        'value' => '',
+      ),
+      'og:locality' => array(
+        'value' => '',
+      ),
+      'og:region' => array(
+        'value' => '',
+      ),
+      'og:postal_code' => array(
+        'value' => '',
+      ),
+      'og:country_name' => array(
+        'value' => '',
+      ),
+      'og:email' => array(
+        'value' => '',
+      ),
+      'og:phone_number' => array(
+        'value' => '',
+      ),
+      'og:fax_number' => array(
+        'value' => '',
+      ),
+      'og:locale' => array(
+        'value' => '',
+      ),
+      'og:locale:alternate' => array(
+        'value' => '',
+      ),
+      'article:author' => array(
+        'value' => '',
+      ),
+      'article:publisher' => array(
+        'value' => '',
+      ),
+      'article:section' => array(
+        'value' => '',
+      ),
+      'article:tag' => array(
+        'value' => '',
+      ),
+      'article:published_time' => array(
+        'value' => '',
+      ),
+      'article:modified_time' => array(
+        'value' => '',
+      ),
+      'article:expiration_time' => array(
+        'value' => '',
+      ),
+      'profile:first_name' => array(
+        'value' => '',
+      ),
+      'profile:last_name' => array(
+        'value' => '',
+      ),
+      'profile:username' => array(
+        'value' => '',
+      ),
+      'profile:gender' => array(
+        'value' => '',
+      ),
+      'og:audio' => array(
+        'value' => '',
+      ),
+      'og:audio:secure_url' => array(
+        'value' => '',
+      ),
+      'og:audio:type' => array(
+        'value' => '',
+      ),
+      'book:author' => array(
+        'value' => '',
+      ),
+      'book:isbn' => array(
+        'value' => '',
+      ),
+      'book:release_date' => array(
+        'value' => '',
+      ),
+      'book:tag' => array(
+        'value' => '',
+      ),
+      'og:video:url' => array(
+        'value' => '',
+      ),
+      'og:video:secure_url' => array(
+        'value' => '',
+      ),
+      'og:video:width' => array(
+        'value' => '',
+      ),
+      'og:video:height' => array(
+        'value' => '',
+      ),
+      'og:video:type' => array(
+        'value' => '',
+      ),
+      'video:actor' => array(
+        'value' => '',
+      ),
+      'video:actor:role' => array(
+        'value' => '',
+      ),
+      'video:director' => array(
+        'value' => '',
+      ),
+      'video:writer' => array(
+        'value' => '',
+      ),
+      'video:duration' => array(
+        'value' => '',
+      ),
+      'video:release_date' => array(
+        'value' => '',
+      ),
+      'video:tag' => array(
+        'value' => '',
+      ),
+      'video:series' => array(
+        'value' => '',
+      ),
+      'twitter:card' => array(
+        'value' => 'summary',
+        'default' => 'summary',
+      ),
+      'twitter:creator' => array(
+        'value' => '',
+      ),
+      'twitter:creator:id' => array(
+        'value' => '',
+      ),
+      'twitter:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'twitter:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'twitter:description' => array(
+        'value' => '',
+      ),
+      'twitter:dnt' => array(
+        'value' => '',
+      ),
+      'twitter:image' => array(
+        'value' => '',
+      ),
+      'twitter:image:width' => array(
+        'value' => '',
+      ),
+      'twitter:image:height' => array(
+        'value' => '',
+      ),
+      'twitter:image:alt' => array(
+        'value' => '',
+      ),
+      'twitter:image0' => array(
+        'value' => '',
+      ),
+      'twitter:image1' => array(
+        'value' => '',
+      ),
+      'twitter:image2' => array(
+        'value' => '',
+      ),
+      'twitter:image3' => array(
+        'value' => '',
+      ),
+      'twitter:player' => array(
+        'value' => '',
+      ),
+      'twitter:player:width' => array(
+        'value' => '',
+      ),
+      'twitter:player:height' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream:content_type' => array(
+        'value' => '',
+      ),
+      'twitter:app:country' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:label1' => array(
+        'value' => '',
+      ),
+      'twitter:data1' => array(
+        'value' => '',
+      ),
+      'twitter:label2' => array(
+        'value' => '',
+      ),
+      'twitter:data2' => array(
+        'value' => '',
+      ),
+    ),
+  );
   $handler->display->display_options['path'] = 'social-feeds';
   $export['social_feeds'] = $view;
 
@@ -1273,11 +3256,10 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -1308,7 +3290,7 @@ function wfs_views_views_default_views() {
     3 => 0,
     4 => 0,
   );
-  /* Filter criterion: Paragraphs item: Title (field_title) */
+  /* Filter criterion: Field: Title (field_title) */
   $handler->display->display_options['filters']['field_title_value']['id'] = 'field_title_value';
   $handler->display->display_options['filters']['field_title_value']['table'] = 'field_data_field_title';
   $handler->display->display_options['filters']['field_title_value']['field'] = 'field_title_value';
@@ -1352,6 +3334,392 @@ function wfs_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['metatags'] = array(
+    'und' => array(
+      'title' => array(
+        'value' => 'Wineries | Wines From Spain',
+        'default' => '[view:title] | [current-page:pager][site:name]',
+      ),
+      'description' => array(
+        'value' => 'Wines from Spain official website provides wineries list. If you want to learn the winery, welcome to select.',
+        'default' => '[view:description]',
+      ),
+      'abstract' => array(
+        'value' => '',
+      ),
+      'keywords' => array(
+        'value' => 'Wineries',
+      ),
+      'robots' => array(
+        'value' => array(
+          'index' => 0,
+          'follow' => 0,
+          'noindex' => 0,
+          'nofollow' => 0,
+          'noarchive' => 0,
+          'nosnippet' => 0,
+          'noodp' => 0,
+          'noydir' => 0,
+          'noimageindex' => 0,
+          'notranslate' => 0,
+        ),
+      ),
+      'news_keywords' => array(
+        'value' => '',
+      ),
+      'standout' => array(
+        'value' => '',
+      ),
+      'rating' => array(
+        'value' => '',
+      ),
+      'referrer' => array(
+        'value' => '',
+      ),
+      'rights' => array(
+        'value' => '',
+      ),
+      'image_src' => array(
+        'value' => '',
+      ),
+      'canonical' => array(
+        'value' => '[view:url]',
+        'default' => '[view:url]',
+      ),
+      'set_cookie' => array(
+        'value' => '',
+      ),
+      'shortlink' => array(
+        'value' => '[current-page:url:unaliased]',
+        'default' => '[current-page:url:unaliased]',
+      ),
+      'original-source' => array(
+        'value' => '',
+      ),
+      'prev' => array(
+        'value' => '',
+      ),
+      'next' => array(
+        'value' => '',
+      ),
+      'content-language' => array(
+        'value' => '',
+      ),
+      'geo.position' => array(
+        'value' => '',
+      ),
+      'geo.placename' => array(
+        'value' => '',
+      ),
+      'geo.region' => array(
+        'value' => '',
+      ),
+      'icbm' => array(
+        'value' => '',
+      ),
+      'refresh' => array(
+        'value' => '',
+      ),
+      'revisit-after' => array(
+        'value' => '',
+        'period' => '',
+      ),
+      'pragma' => array(
+        'value' => '',
+      ),
+      'cache-control' => array(
+        'value' => '',
+      ),
+      'expires' => array(
+        'value' => '',
+      ),
+      'fb:admins' => array(
+        'value' => '',
+      ),
+      'fb:app_id' => array(
+        'value' => '',
+      ),
+      'fb:pages' => array(
+        'value' => '',
+      ),
+      'og:type' => array(
+        'value' => 'article',
+        'default' => 'article',
+      ),
+      'og:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'og:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'og:determiner' => array(
+        'value' => '',
+      ),
+      'og:description' => array(
+        'value' => '',
+      ),
+      'og:updated_time' => array(
+        'value' => '',
+      ),
+      'og:see_also' => array(
+        'value' => '',
+      ),
+      'og:image' => array(
+        'value' => '',
+      ),
+      'og:image:url' => array(
+        'value' => '',
+      ),
+      'og:image:secure_url' => array(
+        'value' => '',
+      ),
+      'og:image:type' => array(
+        'value' => '',
+      ),
+      'og:image:width' => array(
+        'value' => '',
+      ),
+      'og:image:height' => array(
+        'value' => '',
+      ),
+      'og:latitude' => array(
+        'value' => '',
+      ),
+      'og:longitude' => array(
+        'value' => '',
+      ),
+      'og:street_address' => array(
+        'value' => '',
+      ),
+      'og:locality' => array(
+        'value' => '',
+      ),
+      'og:region' => array(
+        'value' => '',
+      ),
+      'og:postal_code' => array(
+        'value' => '',
+      ),
+      'og:country_name' => array(
+        'value' => '',
+      ),
+      'og:email' => array(
+        'value' => '',
+      ),
+      'og:phone_number' => array(
+        'value' => '',
+      ),
+      'og:fax_number' => array(
+        'value' => '',
+      ),
+      'og:locale' => array(
+        'value' => '',
+      ),
+      'og:locale:alternate' => array(
+        'value' => '',
+      ),
+      'article:author' => array(
+        'value' => '',
+      ),
+      'article:publisher' => array(
+        'value' => '',
+      ),
+      'article:section' => array(
+        'value' => '',
+      ),
+      'article:tag' => array(
+        'value' => '',
+      ),
+      'article:published_time' => array(
+        'value' => '',
+      ),
+      'article:modified_time' => array(
+        'value' => '',
+      ),
+      'article:expiration_time' => array(
+        'value' => '',
+      ),
+      'profile:first_name' => array(
+        'value' => '',
+      ),
+      'profile:last_name' => array(
+        'value' => '',
+      ),
+      'profile:username' => array(
+        'value' => '',
+      ),
+      'profile:gender' => array(
+        'value' => '',
+      ),
+      'og:audio' => array(
+        'value' => '',
+      ),
+      'og:audio:secure_url' => array(
+        'value' => '',
+      ),
+      'og:audio:type' => array(
+        'value' => '',
+      ),
+      'book:author' => array(
+        'value' => '',
+      ),
+      'book:isbn' => array(
+        'value' => '',
+      ),
+      'book:release_date' => array(
+        'value' => '',
+      ),
+      'book:tag' => array(
+        'value' => '',
+      ),
+      'og:video:url' => array(
+        'value' => '',
+      ),
+      'og:video:secure_url' => array(
+        'value' => '',
+      ),
+      'og:video:width' => array(
+        'value' => '',
+      ),
+      'og:video:height' => array(
+        'value' => '',
+      ),
+      'og:video:type' => array(
+        'value' => '',
+      ),
+      'video:actor' => array(
+        'value' => '',
+      ),
+      'video:actor:role' => array(
+        'value' => '',
+      ),
+      'video:director' => array(
+        'value' => '',
+      ),
+      'video:writer' => array(
+        'value' => '',
+      ),
+      'video:duration' => array(
+        'value' => '',
+      ),
+      'video:release_date' => array(
+        'value' => '',
+      ),
+      'video:tag' => array(
+        'value' => '',
+      ),
+      'video:series' => array(
+        'value' => '',
+      ),
+      'twitter:card' => array(
+        'value' => 'summary',
+        'default' => 'summary',
+      ),
+      'twitter:creator' => array(
+        'value' => '',
+      ),
+      'twitter:creator:id' => array(
+        'value' => '',
+      ),
+      'twitter:url' => array(
+        'value' => '[current-page:url:absolute]',
+        'default' => '[current-page:url:absolute]',
+      ),
+      'twitter:title' => array(
+        'value' => '[current-page:title]',
+        'default' => '[current-page:title]',
+      ),
+      'twitter:description' => array(
+        'value' => '',
+      ),
+      'twitter:dnt' => array(
+        'value' => '',
+      ),
+      'twitter:image' => array(
+        'value' => '',
+      ),
+      'twitter:image:width' => array(
+        'value' => '',
+      ),
+      'twitter:image:height' => array(
+        'value' => '',
+      ),
+      'twitter:image:alt' => array(
+        'value' => '',
+      ),
+      'twitter:image0' => array(
+        'value' => '',
+      ),
+      'twitter:image1' => array(
+        'value' => '',
+      ),
+      'twitter:image2' => array(
+        'value' => '',
+      ),
+      'twitter:image3' => array(
+        'value' => '',
+      ),
+      'twitter:player' => array(
+        'value' => '',
+      ),
+      'twitter:player:width' => array(
+        'value' => '',
+      ),
+      'twitter:player:height' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream' => array(
+        'value' => '',
+      ),
+      'twitter:player:stream:content_type' => array(
+        'value' => '',
+      ),
+      'twitter:app:country' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:iphone' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:ipad' => array(
+        'value' => '',
+      ),
+      'twitter:app:name:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:id:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:app:url:googleplay' => array(
+        'value' => '',
+      ),
+      'twitter:label1' => array(
+        'value' => '',
+      ),
+      'twitter:data1' => array(
+        'value' => '',
+      ),
+      'twitter:label2' => array(
+        'value' => '',
+      ),
+      'twitter:data2' => array(
+        'value' => '',
+      ),
+    ),
+  );
   $handler->display->display_options['path'] = 'wineries';
 
   /* Display: Block (user winery) */
@@ -1417,6 +3785,7 @@ function wfs_views_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';

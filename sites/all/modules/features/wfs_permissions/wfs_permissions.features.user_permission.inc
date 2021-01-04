@@ -895,6 +895,7 @@ function wfs_permissions_user_default_permissions() {
     'name' => 'delete own winery content',
     'roles' => array(
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
       'editor' => 'editor',
       'registered' => 'registered',
     ),
@@ -1219,6 +1220,7 @@ function wfs_permissions_user_default_permissions() {
     'name' => 'edit own winery content',
     'roles' => array(
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
       'editor' => 'editor',
       'registered' => 'registered',
     ),
@@ -1341,6 +1343,8 @@ function wfs_permissions_user_default_permissions() {
     'name' => 'search content',
     'roles' => array(
       'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
       'editor' => 'editor',
     ),
     'module' => 'search',
@@ -1368,16 +1372,6 @@ function wfs_permissions_user_default_permissions() {
   // Exported permission: 'skip news content approval prior their publication'.
   $permissions['skip news content approval prior their publication'] = array(
     'name' => 'skip news content approval prior their publication',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'editor' => 'editor',
-    ),
-    'module' => 'content_approval',
-  );
-
-  // Exported permission: 'skip winery content approval prior their publication'.
-  $permissions['skip winery content approval prior their publication'] = array(
-    'name' => 'skip winery content approval prior their publication',
     'roles' => array(
       'administrator' => 'administrator',
       'editor' => 'editor',
@@ -1472,8 +1466,6 @@ function wfs_permissions_user_default_permissions() {
     'name' => 'use text format filtered_html',
     'roles' => array(
       'administrator' => 'administrator',
-      'anonymous user' => 'anonymous user',
-      'authenticated user' => 'authenticated user',
       'editor' => 'editor',
     ),
     'module' => 'filter',
@@ -1568,9 +1560,7 @@ function wfs_permissions_user_default_permissions() {
     'name' => 'view the administration theme',
     'roles' => array(
       'administrator' => 'administrator',
-      'authenticated user' => 'authenticated user',
       'editor' => 'editor',
-      'registered' => 'registered',
     ),
     'module' => 'system',
   );

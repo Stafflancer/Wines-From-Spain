@@ -182,7 +182,6 @@ features[user_permission][] = search content
 features[user_permission][] = select account cancellation method
 features[user_permission][] = skip event content approval prior their publication
 features[user_permission][] = skip news content approval prior their publication
-features[user_permission][] = skip winery content approval prior their publication
 features[user_permission][] = switch shortcut sets
 features[user_permission][] = translate admin strings
 features[user_permission][] = translate content
