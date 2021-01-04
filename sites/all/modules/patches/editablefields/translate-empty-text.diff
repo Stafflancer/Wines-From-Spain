@@ -1,0 +1,16 @@
+ sites/all/modules/contrib/editablefields/editablefields.module | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sites/all/modules/contrib/editablefields/editablefields.module b/sites/all/modules/contrib/editablefields/editablefields.module
+index ec82f1397..4bbc308ca 100644
+--- a/sites/all/modules/contrib/editablefields/editablefields.module
++++ b/sites/all/modules/contrib/editablefields/editablefields.module
+@@ -433,7 +433,7 @@ function editablefields_lazy_render_fields($element) {
+   $element['field'] = call_user_func_array('editablefields_fallback_formatter', $element['#arguments']->arguments);
+   if (empty($element['field']) && !empty($element['#arguments']->arguments[6]['settings']['empty_text'])) {
+     $element['field'] = array(
+-      '#markup' => $element['#arguments']->arguments[6]['settings']['empty_text'],
++      '#markup' => t($element['#arguments']->arguments[6]['settings']['empty_text']),
+     );
+   }
+   return $element;

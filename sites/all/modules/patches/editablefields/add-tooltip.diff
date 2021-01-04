@@ -1,0 +1,21 @@
+ sites/all/modules/contrib/editablefields/editablefields.module | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/sites/all/modules/contrib/editablefields/editablefields.module b/sites/all/modules/contrib/editablefields/editablefields.module
+index 4bbc308ca..8656f3724 100644
+--- a/sites/all/modules/contrib/editablefields/editablefields.module
++++ b/sites/all/modules/contrib/editablefields/editablefields.module
+@@ -393,6 +393,13 @@ function editablefields_form($form, &$form_state, $entity_type, $entity, $field,
+       '#pre_render' => array('editablefields_lazy_render_fields'),
+       '#arguments' => $shield,
+     );
++
++    if (!empty($instance['description'])) {
++      $form['icon'] = array(
++        '#markup' => '<img src="/sites/all/themes/wfs/img/help.png" class="wfs-tooltip" title="' . t($instance['description']) . '" style="margin-right: 5px">',
++      );
++    }
++
+     // Click to edit mode: generate a AJAX-bound submit handler.
+     $form['actions']['edit'] = array(
+       '#name' => 'edit-' . implode('-', $form['#parents']),
