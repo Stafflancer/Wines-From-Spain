@@ -351,9 +351,19 @@ function wfs_content_types_paragraphs_info() {
       'bundle' => 'importers_contacts_section',
       'locked' => '1',
     ),
+    'item' => array(
+      'name' => 'Item',
+      'bundle' => 'item',
+      'locked' => '1',
+    ),
     'news_events_section' => array(
       'name' => 'News & Events section',
       'bundle' => 'news_events_section',
+      'locked' => '1',
+    ),
+    'table_section' => array(
+      'name' => 'Table section',
+      'bundle' => 'table_section',
       'locked' => '1',
     ),
     'text_l_image_r' => array(

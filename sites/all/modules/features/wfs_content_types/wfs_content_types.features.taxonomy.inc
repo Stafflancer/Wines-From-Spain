@@ -11,7 +11,7 @@
 function wfs_content_types_taxonomy_default_vocabularies() {
   return array(
     'dos' => array(
-      'name' => '原产地名称保护',
+      'name' => 'DOs',
       'machine_name' => 'dos',
       'description' => '',
       'hierarchy' => 0,

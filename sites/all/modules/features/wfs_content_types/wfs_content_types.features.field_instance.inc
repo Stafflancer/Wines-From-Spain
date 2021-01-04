@@ -401,6 +401,480 @@ function wfs_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_brands-field_description'.
+  $field_instances['field_collection_item-field_fc_brands-field_description'] = array(
+    'bundle' => 'field_fc_brands',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'smart_trim',
+        'settings' => array(
+          'more_link' => 0,
+          'more_text' => 'Read more',
+          'summary_handler' => 'full',
+          'trim_length' => 300,
+          'trim_link' => 0,
+          'trim_options' => array(
+            'text' => 0,
+          ),
+          'trim_preserve_tags' => '',
+          'trim_suffix' => '',
+          'trim_type' => 'words',
+        ),
+        'type' => 'smart_trim_format',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_description',
+    'label' => 'Description',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_brands-field_image'.
+  $field_instances['field_collection_item-field_fc_brands-field_image'] = array(
+    'bundle' => 'field_fc_brands',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => 'simplecrop',
+        ),
+        'type' => 'image',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_image',
+    'label' => 'Image',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 1,
+      'default_image' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'title_field' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'simplecrop',
+      'settings' => array(
+        'preview_image_style' => FALSE,
+        'progress_indicator' => 'throbber',
+        'simplecrop' => array(
+          'crop' => array(
+            'initial_area' => 'maximize',
+            'max_area' => array(
+              'height' => '',
+              'width' => '',
+            ),
+            'min_area' => array(
+              'height' => 115,
+              'width' => 160,
+            ),
+            'ratio' => array(
+              'height' => 115,
+              'width' => 160,
+            ),
+          ),
+          'cropped' => array(
+            'scale' => array(
+              'height' => 100,
+              'width' => 100,
+            ),
+          ),
+          'hide_filename' => 1,
+          'initial_display' => 'cropped_image',
+          'source' => array(
+            'scale' => array(
+              'height' => 350,
+              'width' => 350,
+            ),
+          ),
+          'upload_display' => 'original_image',
+        ),
+      ),
+      'type' => 'simplecrop_widget',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_brands-field_title'.
+  $field_instances['field_collection_item-field_fc_brands-field_title'] = array(
+    'bundle' => 'field_fc_brands',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_title',
+    'label' => 'Title',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_importers_contacts-field_contact_person'.
+  $field_instances['field_collection_item-field_fc_importers_contacts-field_contact_person'] = array(
+    'bundle' => 'field_fc_importers_contacts',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_contact_person',
+    'label' => 'Contact person:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_importers_contacts-field_email_address'.
+  $field_instances['field_collection_item-field_fc_importers_contacts-field_email_address'] = array(
+    'bundle' => 'field_fc_importers_contacts',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_email_address',
+    'label' => 'Email address:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_importers_contacts-field_importer_name'.
+  $field_instances['field_collection_item-field_fc_importers_contacts-field_importer_name'] = array(
+    'bundle' => 'field_fc_importers_contacts',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_importer_name',
+    'label' => 'Importer name:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_importers_contacts-field_telephone_number'.
+  $field_instances['field_collection_item-field_fc_importers_contacts-field_telephone_number'] = array(
+    'bundle' => 'field_fc_importers_contacts',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_telephone_number',
+    'label' => 'Telephone number:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 8,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_importers_contacts-field_website'.
+  $field_instances['field_collection_item-field_fc_importers_contacts-field_website'] = array(
+    'bundle' => 'field_fc_importers_contacts',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 4,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_website',
+    'label' => 'Website:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 10,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_winery_contact-field_contact_person'.
+  $field_instances['field_collection_item-field_fc_winery_contact-field_contact_person'] = array(
+    'bundle' => 'field_fc_winery_contact',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_contact_person',
+    'label' => 'Contact person:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_winery_contact-field_email_address'.
+  $field_instances['field_collection_item-field_fc_winery_contact-field_email_address'] = array(
+    'bundle' => 'field_fc_winery_contact',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_email_address',
+    'label' => 'Email address:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_winery_contact-field_telephone_number'.
+  $field_instances['field_collection_item-field_fc_winery_contact-field_telephone_number'] = array(
+    'bundle' => 'field_fc_winery_contact',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_telephone_number',
+    'label' => 'Telephone number:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_fc_winery_contact-field_website'.
+  $field_instances['field_collection_item-field_fc_winery_contact-field_website'] = array(
+    'bundle' => 'field_fc_winery_contact',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_website',
+    'label' => 'Website:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 8,
+    ),
+  );
+
   // Exported field_instance: 'node-contact_us-field_sections'.
   $field_instances['node-contact_us-field_sections'] = array(
     'bundle' => 'contact_us',
@@ -1159,7 +1633,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1202,7 +1676,7 @@ function wfs_content_types_field_default_field_instances() {
           'show_remaining_days' => 0,
         ),
         'type' => 'date_default',
-        'weight' => 1,
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1258,7 +1732,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1299,6 +1773,88 @@ function wfs_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-news-field_image'.
+  $field_instances['node-news-field_image'] = array(
+    'bundle' => 'news',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => 'simplecrop',
+        ),
+        'type' => 'image',
+        'weight' => 3,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_image',
+    'label' => 'Image',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 1,
+      'default_image' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'title_field' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'simplecrop',
+      'settings' => array(
+        'preview_image_style' => FALSE,
+        'progress_indicator' => 'throbber',
+        'simplecrop' => array(
+          'crop' => array(
+            'initial_area' => 'maximize',
+            'max_area' => array(
+              'height' => '',
+              'width' => '',
+            ),
+            'min_area' => array(
+              'height' => '',
+              'width' => '',
+            ),
+            'ratio' => array(
+              'height' => '',
+              'width' => '',
+            ),
+          ),
+          'cropped' => array(
+            'scale' => array(
+              'height' => 100,
+              'width' => 100,
+            ),
+          ),
+          'hide_filename' => 1,
+          'initial_display' => 'cropped_image',
+          'source' => array(
+            'scale' => array(
+              'height' => 350,
+              'width' => 350,
+            ),
+          ),
+          'upload_display' => 'original_image',
+        ),
+      ),
+      'type' => 'simplecrop_widget',
+      'weight' => 47,
+    ),
+  );
+
   // Exported field_instance: 'node-news-field_link'.
   $field_instances['node-news-field_link'] = array(
     'bundle' => 'news',
@@ -1310,7 +1866,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1367,7 +1923,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1405,7 +1961,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1487,7 +2043,89 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 10,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => 'simplecrop',
+        ),
+        'type' => 'image',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_main_image_list',
+    'label' => 'Main image (list)',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 1,
+      'default_image' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'title_field' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'simplecrop',
+      'settings' => array(
+        'preview_image_style' => FALSE,
+        'progress_indicator' => 'throbber',
+        'simplecrop' => array(
+          'crop' => array(
+            'initial_area' => 'maximize',
+            'max_area' => array(
+              'height' => '',
+              'width' => '',
+            ),
+            'min_area' => array(
+              'height' => 219,
+              'width' => 298,
+            ),
+            'ratio' => array(
+              'height' => 219,
+              'width' => 298,
+            ),
+          ),
+          'cropped' => array(
+            'scale' => array(
+              'height' => 100,
+              'width' => 100,
+            ),
+          ),
+          'hide_filename' => 1,
+          'initial_display' => 'cropped_image',
+          'source' => array(
+            'scale' => array(
+              'height' => 350,
+              'width' => 350,
+            ),
+          ),
+          'upload_display' => 'original_image',
+        ),
+      ),
+      'type' => 'simplecrop_widget',
+      'weight' => 4,
+    ),
+  );
+  
+  // Exported field_instance: 'node-news-field_main_image_list'.
+  $field_instances['node-article-detail-field_main_image_list'] = array(
+    'bundle' => 'article-detail',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1559,77 +2197,6 @@ function wfs_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-news-field_sections'.
-  $field_instances['node-news-field_sections'] = array(
-    'bundle' => 'news',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'paragraphs',
-        'settings' => array(
-          'view_mode' => 'full',
-        ),
-        'type' => 'paragraphs_view',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_sections',
-    'label' => 'Sections',
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'select',
-      'allowed_bundles' => array(
-        '1_big_block_section' => -1,
-        '1_big_image' => '1_big_image',
-        '2_blocks_section' => -1,
-        '2_images_section' => '2_images_section',
-        'banner_item_section' => -1,
-        'banner_section' => 'banner_section',
-        'contact_information_section' => -1,
-        'image_l_text_r' => -1,
-        'news_events_section' => -1,
-        'text_l_image_r' => -1,
-        'text_section' => 'text_section',
-        'title_section' => -1,
-      ),
-      'bundle_weights' => array(
-        '1_big_block_section' => 2,
-        '1_big_image' => 3,
-        '2_blocks_section' => 4,
-        '2_images_section' => 5,
-        'banner_item_section' => 6,
-        'banner_section' => 7,
-        'contact_information_section' => 8,
-        'image_l_text_r' => 9,
-        'news_events_section' => 10,
-        'text_l_image_r' => 11,
-        'text_section' => 12,
-        'title_section' => 13,
-      ),
-      'default_edit_mode' => 'closed',
-      'title' => 'Section',
-      'title_multiple' => 'Sections',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 12,
-    ),
-  );
-
   // Exported field_instance: 'node-news-field_share'.
   $field_instances['node-news-field_share'] = array(
     'bundle' => 'news',
@@ -1641,7 +2208,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1685,7 +2252,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1710,6 +2277,46 @@ function wfs_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-news-field_text'.
+  $field_instances['node-news-field_text'] = array(
+    'bundle' => 'news',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_text',
+    'label' => 'Text',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 45,
+    ),
+  );
+
   // Exported field_instance: 'node-news-field_winery'.
   $field_instances['node-news-field_winery'] = array(
     'bundle' => 'news',
@@ -1725,7 +2332,7 @@ function wfs_content_types_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -2690,7 +3297,9 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => 'image_l_text_r',
         'importer_contact_item' => -1,
         'importers_contacts_section' => -1,
+        'item' => -1,
         'news_events_section' => -1,
+        'table_section' => 'table_section',
         'text_l_image_r' => 'text_l_image_r',
         'text_section' => 'text_section',
         'winery_contact_section' => -1,
@@ -2710,7 +3319,9 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => -18,
         'importer_contact_item' => 15,
         'importers_contacts_section' => 14,
+        'item' => 35,
         'news_events_section' => -12,
+        'table_section' => 37,
         'text_l_image_r' => -17,
         'text_section' => -21,
         'winery_contact_section' => 19,
@@ -3390,12 +4001,18 @@ function wfs_content_types_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'paragraphs',
+        'label' => 'above',
+        'module' => 'editablefields',
         'settings' => array(
-          'view_mode' => 'full',
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Brands section is empty.',
+          'fallback_format' => 'paragraphs_view',
+          'fallback_settings' => array(
+            'view_mode' => 'full',
+          ),
         ),
-        'type' => 'paragraphs_view',
+        'type' => 'editable',
         'weight' => 4,
       ),
       'teaser' => array(
@@ -3407,7 +4024,7 @@ function wfs_content_types_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_brands_section',
-    'label' => 'Brands section',
+    'label' => 'Brands',
     'required' => 1,
     'settings' => array(
       'add_mode' => 'select',
@@ -3424,9 +4041,14 @@ function wfs_content_types_field_default_field_instances() {
         'contact_information_section' => -1,
         'dos_section' => -1,
         'image_l_text_r' => -1,
+        'importer_contact_item' => -1,
+        'importers_contacts_section' => -1,
+        'item' => -1,
         'news_events_section' => -1,
+        'table_section' => -1,
         'text_l_image_r' => -1,
         'text_section' => -1,
+        'winery_contact_section' => -1,
       ),
       'bundle_weights' => array(
         '1_big_block_section' => 2,
@@ -3441,11 +4063,16 @@ function wfs_content_types_field_default_field_instances() {
         'contact_information_section' => 9,
         'dos_section' => 10,
         'image_l_text_r' => 11,
+        'importer_contact_item' => 38,
+        'importers_contacts_section' => 37,
+        'item' => 39,
         'news_events_section' => 12,
+        'table_section' => -40,
         'text_l_image_r' => 13,
         'text_section' => 14,
+        'winery_contact_section' => -40,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Section',
       'title_multiple' => 'Sections',
       'user_register_form' => FALSE,
@@ -3455,44 +4082,8 @@ function wfs_content_types_field_default_field_instances() {
       'module' => 'paragraphs',
       'settings' => array(),
       'type' => 'paragraphs_embed',
-      'weight' => 5,
+      'weight' => 4,
     ),
-  );
-
-  // Exported field_instance: 'node-winery-field_content_approval'.
-  $field_instances['node-winery-field_content_approval'] = array(
-    'bundle' => 'winery',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-      'teaser' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_content_approval',
-    'label' => 'Content approval',
-    'required' => FALSE,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'module' => 'content_approval_field',
-      'settings' => array(),
-      'type' => 'content_approval',
-      'weight' => 41,
-    ),
-    'widget_type' => 'content_approval',
   );
 
   // Exported field_instance: 'node-winery-field_do'.
@@ -3504,9 +4095,15 @@ function wfs_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'taxonomy',
-        'settings' => array(),
-        'type' => 'taxonomy_term_reference_plain',
+        'module' => 'editablefields',
+        'settings' => array(
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'DO is empty.',
+          'fallback_format' => 'i18n_taxonomy_term_reference_plain',
+          'fallback_settings' => array(),
+        ),
+        'type' => 'editable',
         'weight' => 10,
       ),
       'teaser' => array(
@@ -3525,13 +4122,148 @@ function wfs_content_types_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 0,
-      'module' => 'taxonomy',
+      'module' => 'options',
       'settings' => array(
         'autocomplete_path' => 'taxonomy/autocomplete',
         'size' => 60,
       ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 3,
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'node-winery-field_fc_brands'.
+  $field_instances['node-winery-field_fc_brands'] = array(
+    'bundle' => 'winery',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'editablefields',
+        'settings' => array(
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Brands are empty.',
+          'fallback_format' => 'field_collection_fields',
+          'fallback_settings' => array(
+            'view_mode' => 'full',
+          ),
+        ),
+        'type' => 'editable',
+        'weight' => 15,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_fc_brands',
+    'label' => 'Brands',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'node-winery-field_fc_importers_contacts'.
+  $field_instances['node-winery-field_fc_importers_contacts'] = array(
+    'bundle' => 'winery',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'editablefields',
+        'settings' => array(
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Contact of importers are empty.',
+          'fallback_format' => 'field_collection_fields',
+          'fallback_settings' => array(
+            'view_mode' => 'full',
+          ),
+        ),
+        'type' => 'editable',
+        'weight' => 14,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_fc_importers_contacts',
+    'label' => 'Contact of importers',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 8,
+    ),
+  );
+
+  // Exported field_instance: 'node-winery-field_fc_winery_contact'.
+  $field_instances['node-winery-field_fc_winery_contact'] = array(
+    'bundle' => 'winery',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'editablefields',
+        'settings' => array(
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Contact of winery is empty.',
+          'fallback_format' => 'field_collection_fields',
+          'fallback_settings' => array(
+            'view_mode' => 'full',
+          ),
+        ),
+        'type' => 'editable',
+        'weight' => 13,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_fc_winery_contact',
+    'label' => 'Contact of winery',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 6,
     ),
   );
 
@@ -3543,12 +4275,18 @@ function wfs_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
+        'module' => 'editablefields',
         'settings' => array(
-          'image_link' => '',
-          'image_style' => 'simplecrop',
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Image is empty.',
+          'fallback_format' => 'image',
+          'fallback_settings' => array(
+            'image_link' => '',
+            'image_style' => 'auto_crop',
+          ),
         ),
-        'type' => 'image',
+        'type' => 'editable',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -3575,44 +4313,12 @@ function wfs_content_types_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'simplecrop',
+      'module' => 'image',
       'settings' => array(
-        'preview_image_style' => FALSE,
+        'preview_image_style' => 'auto_crop',
         'progress_indicator' => 'throbber',
-        'simplecrop' => array(
-          'crop' => array(
-            'initial_area' => 'maximize',
-            'max_area' => array(
-              'height' => '',
-              'width' => '',
-            ),
-            'min_area' => array(
-              'height' => 180,
-              'width' => 298,
-            ),
-            'ratio' => array(
-              'height' => 180,
-              'width' => 298,
-            ),
-          ),
-          'cropped' => array(
-            'scale' => array(
-              'height' => 100,
-              'width' => 100,
-            ),
-          ),
-          'hide_filename' => 1,
-          'initial_display' => 'cropped_image',
-          'source' => array(
-            'scale' => array(
-              'height' => 350,
-              'width' => 350,
-            ),
-          ),
-          'upload_display' => 'original_image',
-        ),
       ),
-      'type' => 'simplecrop_widget',
+      'type' => 'image_image',
       'weight' => 4,
     ),
   );
@@ -3625,12 +4331,18 @@ function wfs_content_types_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'paragraphs',
+        'label' => 'above',
+        'module' => 'editablefields',
         'settings' => array(
-          'view_mode' => 'full',
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Importers contacts are empty.',
+          'fallback_format' => 'paragraphs_view',
+          'fallback_settings' => array(
+            'view_mode' => 'full',
+          ),
         ),
-        'type' => 'paragraphs_view',
+        'type' => 'editable',
         'weight' => 8,
       ),
       'teaser' => array(
@@ -3642,7 +4354,7 @@ function wfs_content_types_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_importers_contacts',
-    'label' => 'Importers contacts',
+    'label' => 'Contact of importers',
     'required' => 1,
     'settings' => array(
       'add_mode' => 'select',
@@ -3661,7 +4373,9 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => -1,
         'importer_contact_item' => -1,
         'importers_contacts_section' => 'importers_contacts_section',
+        'item' => -1,
         'news_events_section' => -1,
+        'table_section' => -1,
         'text_l_image_r' => -1,
         'text_section' => -1,
         'winery_contact_section' => -1,
@@ -3681,12 +4395,14 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => 13,
         'importer_contact_item' => 32,
         'importers_contacts_section' => 31,
+        'item' => -40,
         'news_events_section' => 14,
+        'table_section' => -40,
         'text_l_image_r' => 15,
         'text_section' => 16,
         'winery_contact_section' => 17,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Section',
       'title_multiple' => 'Sections',
       'user_register_form' => FALSE,
@@ -3696,7 +4412,7 @@ function wfs_content_types_field_default_field_instances() {
       'module' => 'paragraphs',
       'settings' => array(),
       'type' => 'paragraphs_embed',
-      'weight' => 6,
+      'weight' => 7,
     ),
   );
 
@@ -3708,12 +4424,18 @@ function wfs_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
+        'module' => 'editablefields',
         'settings' => array(
-          'image_link' => '',
-          'image_style' => 'simplecrop',
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Logo is empty.',
+          'fallback_format' => 'image',
+          'fallback_settings' => array(
+            'image_link' => '',
+            'image_style' => 'auto_crop_logo',
+          ),
         ),
-        'type' => 'image',
+        'type' => 'editable',
         'weight' => 2,
       ),
       'teaser' => array(
@@ -3740,44 +4462,58 @@ function wfs_content_types_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'simplecrop',
+      'module' => 'image',
       'settings' => array(
-        'preview_image_style' => FALSE,
+        'preview_image_style' => 'auto_crop_logo',
         'progress_indicator' => 'throbber',
-        'simplecrop' => array(
-          'crop' => array(
-            'initial_area' => 'maximize',
-            'max_area' => array(
-              'height' => '',
-              'width' => '',
-            ),
-            'min_area' => array(
-              'height' => 115,
-              'width' => 235,
-            ),
-            'ratio' => array(
-              'height' => 115,
-              'width' => 235,
-            ),
-          ),
-          'cropped' => array(
-            'scale' => array(
-              'height' => 100,
-              'width' => 100,
-            ),
-          ),
-          'hide_filename' => 1,
-          'initial_display' => 'cropped_image',
-          'source' => array(
-            'scale' => array(
-              'height' => 350,
-              'width' => 350,
-            ),
-          ),
-          'upload_display' => 'original_image',
-        ),
       ),
-      'type' => 'simplecrop_widget',
+      'type' => 'image_image',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'node-winery-field_node_title'.
+  $field_instances['node-winery-field_node_title'] = array(
+    'bundle' => 'winery',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'editablefields',
+        'settings' => array(
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Winery name is empty.',
+          'fallback_format' => 'text_default',
+          'fallback_settings' => array(),
+        ),
+        'type' => 'editable',
+        'weight' => 11,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_node_title',
+    'label' => 'Winery Name',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
       'weight' => 1,
     ),
   );
@@ -3791,21 +4527,26 @@ function wfs_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'smart_trim',
+        'module' => 'editablefields',
         'settings' => array(
-          'more_link' => 0,
-          'more_text' => 'Read more',
-          'summary_handler' => 'full',
-          'trim_length' => 700,
-          'trim_link' => 0,
-          'trim_options' => array(
-            'text' => 0,
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Presentation is empty.',
+          'fallback_format' => 'smart_trim_format',
+          'fallback_settings' => array(
+            'more_link' => 0,
+            'more_text' => 'Read more',
+            'trim_length' => 700,
+            'trim_link' => 0,
+            'trim_options' => array(
+              'text' => 0,
+            ),
+            'trim_preserve_tags' => '',
+            'trim_suffix' => '',
+            'trim_type' => 'words',
           ),
-          'trim_preserve_tags' => '',
-          'trim_suffix' => '',
-          'trim_type' => 'words',
         ),
-        'type' => 'smart_trim_format',
+        'type' => 'editable',
         'weight' => 3,
       ),
       'teaser' => array(
@@ -3830,7 +4571,7 @@ function wfs_content_types_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 4,
+      'weight' => 3,
     ),
   );
 
@@ -3849,7 +4590,7 @@ function wfs_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -3870,7 +4611,7 @@ function wfs_content_types_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 42,
+      'weight' => 8,
     ),
   );
 
@@ -3882,11 +4623,17 @@ function wfs_content_types_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 6,
+        'label' => 'above',
+        'module' => 'editablefields',
+        'settings' => array(
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Note text is empty.',
+          'fallback_format' => 'text_default',
+          'fallback_settings' => array(),
+        ),
+        'type' => 'editable',
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -3897,7 +4644,7 @@ function wfs_content_types_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_text',
-    'label' => 'Text',
+    'label' => 'Note:',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
@@ -3914,46 +4661,6 @@ function wfs_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-winery-field_title'.
-  $field_instances['node-winery-field_title'] = array(
-    'bundle' => 'winery',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 5,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_title',
-    'label' => 'Title',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 37,
-    ),
-  );
-
   // Exported field_instance: 'node-winery-field_winery_contact'.
   $field_instances['node-winery-field_winery_contact'] = array(
     'bundle' => 'winery',
@@ -3962,13 +4669,19 @@ function wfs_content_types_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'paragraphs',
+        'label' => 'above',
+        'module' => 'editablefields',
         'settings' => array(
-          'view_mode' => 'full',
+          'click_to_edit' => 1,
+          'click_to_edit_style' => 'button',
+          'empty_text' => 'Winery contact is empty.',
+          'fallback_format' => 'paragraphs_view',
+          'fallback_settings' => array(
+            'view_mode' => 'full',
+          ),
         ),
-        'type' => 'paragraphs_view',
-        'weight' => 7,
+        'type' => 'editable',
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -3979,7 +4692,7 @@ function wfs_content_types_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_winery_contact',
-    'label' => 'Winery contact',
+    'label' => 'Contact of winery',
     'required' => 1,
     'settings' => array(
       'add_mode' => 'select',
@@ -3998,7 +4711,9 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => -1,
         'importer_contact_item' => -1,
         'importers_contacts_section' => -1,
+        'item' => -1,
         'news_events_section' => -1,
+        'table_section' => -1,
         'text_l_image_r' => -1,
         'text_section' => -1,
         'winery_contact_section' => 'winery_contact_section',
@@ -4018,12 +4733,14 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => 13,
         'importer_contact_item' => 31,
         'importers_contacts_section' => 30,
+        'item' => -40,
         'news_events_section' => 14,
+        'table_section' => -40,
         'text_l_image_r' => 15,
         'text_section' => 16,
         'winery_contact_section' => -32,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Section',
       'title_multiple' => 'Sections',
       'user_register_form' => FALSE,
@@ -5368,9 +6085,14 @@ function wfs_content_types_field_default_field_instances() {
         'contact_information_section' => -1,
         'dos_section' => -1,
         'image_l_text_r' => -1,
+        'importer_contact_item' => -1,
+        'importers_contacts_section' => -1,
+        'item' => -1,
         'news_events_section' => -1,
+        'table_section' => -1,
         'text_l_image_r' => -1,
         'text_section' => -1,
+        'winery_contact_section' => -1,
       ),
       'bundle_weights' => array(
         '1_big_block_section' => 2,
@@ -5385,11 +6107,16 @@ function wfs_content_types_field_default_field_instances() {
         'contact_information_section' => 10,
         'dos_section' => 11,
         'image_l_text_r' => 12,
+        'importer_contact_item' => 39,
+        'importers_contacts_section' => 38,
+        'item' => 40,
         'news_events_section' => 13,
+        'table_section' => -40,
         'text_l_image_r' => 14,
         'text_section' => 15,
+        'winery_contact_section' => -40,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Item',
       'title_multiple' => 'Items',
       'user_register_form' => FALSE,
@@ -5403,49 +6130,9 @@ function wfs_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'paragraphs_item-brands_section-field_title'.
-  $field_instances['paragraphs_item-brands_section-field_title'] = array(
-    'bundle' => 'brands_section',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
-      ),
-      'paragraphs_editor_preview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_title',
-    'label' => 'Title',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 2,
-    ),
-  );
-
   // Exported field_instance:
-  // 'paragraphs_item-contact_information_item-field_label'.
-  $field_instances['paragraphs_item-contact_information_item-field_label'] = array(
+  // 'paragraphs_item-contact_information_item-field_label_list'.
+  $field_instances['paragraphs_item-contact_information_item-field_label_list'] = array(
     'bundle' => 'contact_information_item',
     'default_value' => NULL,
     'deleted' => 0,
@@ -5453,10 +6140,10 @@ function wfs_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
+        'module' => 'i18n_field',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
+        'type' => 'i18n_list_default',
+        'weight' => 1,
       ),
       'paragraphs_editor_preview' => array(
         'label' => 'above',
@@ -5466,21 +6153,18 @@ function wfs_content_types_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_label',
+    'field_name' => 'field_label_list',
     'label' => 'Label',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 0,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 1,
     ),
   );
 
@@ -5497,7 +6181,7 @@ function wfs_content_types_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'paragraphs_editor_preview' => array(
         'label' => 'above',
@@ -5521,7 +6205,7 @@ function wfs_content_types_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -5925,20 +6609,100 @@ function wfs_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'paragraphs_item-importer_contact_item-field_items'.
-  $field_instances['paragraphs_item-importer_contact_item-field_items'] = array(
+  // 'paragraphs_item-importer_contact_item-field_contact_person'.
+  $field_instances['paragraphs_item-importer_contact_item-field_contact_person'] = array(
     'bundle' => 'importer_contact_item',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'paragraphs',
-        'settings' => array(
-          'view_mode' => 'full',
-        ),
-        'type' => 'paragraphs_view',
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_contact_person',
+    'label' => 'Contact person:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'paragraphs_item-importer_contact_item-field_email_address'.
+  $field_instances['paragraphs_item-importer_contact_item-field_email_address'] = array(
+    'bundle' => 'importer_contact_item',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_email_address',
+    'label' => 'Email address:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'paragraphs_item-importer_contact_item-field_importer_name'.
+  $field_instances['paragraphs_item-importer_contact_item-field_importer_name'] = array(
+    'bundle' => 'importer_contact_item',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
         'weight' => 0,
       ),
       'paragraphs_editor_preview' => array(
@@ -5949,62 +6713,103 @@ function wfs_content_types_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_items',
-    'label' => 'Items',
+    'field_name' => 'field_importer_name',
+    'label' => 'Importer name:',
     'required' => 0,
     'settings' => array(
-      'add_mode' => 'select',
-      'allowed_bundles' => array(
-        '1_big_block_section' => -1,
-        '1_big_image' => -1,
-        '2_blocks_section' => -1,
-        '2_images_section' => -1,
-        'banner_item_section' => -1,
-        'banner_section' => -1,
-        'brand_item' => -1,
-        'brands_section' => -1,
-        'contact_information_item' => 'contact_information_item',
-        'contact_information_section' => -1,
-        'dos_section' => -1,
-        'image_l_text_r' => -1,
-        'importer_contact_item' => -1,
-        'importers_contacts_section' => -1,
-        'news_events_section' => -1,
-        'text_l_image_r' => -1,
-        'text_section' => -1,
-        'winery_contact_section' => -1,
-      ),
-      'bundle_weights' => array(
-        '1_big_block_section' => 2,
-        '1_big_image' => 3,
-        '2_blocks_section' => 4,
-        '2_images_section' => 5,
-        'banner_item_section' => 6,
-        'banner_section' => 7,
-        'brand_item' => 9,
-        'brands_section' => 8,
-        'contact_information_item' => 10,
-        'contact_information_section' => 11,
-        'dos_section' => 12,
-        'image_l_text_r' => 13,
-        'importer_contact_item' => 15,
-        'importers_contacts_section' => 14,
-        'news_events_section' => 16,
-        'text_l_image_r' => 17,
-        'text_section' => 18,
-        'winery_contact_section' => 19,
-      ),
-      'default_edit_mode' => 'closed',
-      'title' => 'Item',
-      'title_multiple' => 'Items',
+      'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 2,
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'paragraphs_item-importer_contact_item-field_telephone_number'.
+  $field_instances['paragraphs_item-importer_contact_item-field_telephone_number'] = array(
+    'bundle' => 'importer_contact_item',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_telephone_number',
+    'label' => 'Telephone number:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'paragraphs_item-importer_contact_item-field_website'.
+  $field_instances['paragraphs_item-importer_contact_item-field_website'] = array(
+    'bundle' => 'importer_contact_item',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 4,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_website',
+    'label' => 'Website:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 5,
     ),
   );
 
@@ -6053,7 +6858,9 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => -1,
         'importer_contact_item' => 'importer_contact_item',
         'importers_contacts_section' => -1,
+        'item' => -1,
         'news_events_section' => -1,
+        'table_section' => -1,
         'text_l_image_r' => -1,
         'text_section' => -1,
         'winery_contact_section' => -1,
@@ -6073,12 +6880,14 @@ function wfs_content_types_field_default_field_instances() {
         'image_l_text_r' => 13,
         'importer_contact_item' => 33,
         'importers_contacts_section' => 14,
+        'item' => -40,
         'news_events_section' => 15,
+        'table_section' => -40,
         'text_l_image_r' => 16,
         'text_section' => 17,
         'winery_contact_section' => 18,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Item',
       'title_multiple' => 'Items',
       'user_register_form' => FALSE,
@@ -6092,10 +6901,9 @@ function wfs_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'paragraphs_item-importers_contacts_section-field_title'.
-  $field_instances['paragraphs_item-importers_contacts_section-field_title'] = array(
-    'bundle' => 'importers_contacts_section',
+  // Exported field_instance: 'paragraphs_item-item-field_label'.
+  $field_instances['paragraphs_item-item-field_label'] = array(
+    'bundle' => 'item',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
@@ -6115,8 +6923,8 @@ function wfs_content_types_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_title',
-    'label' => 'Title',
+    'field_name' => 'field_label',
+    'label' => 'Label',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -6130,6 +6938,46 @@ function wfs_content_types_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'paragraphs_item-item-field_text'.
+  $field_instances['paragraphs_item-item-field_text'] = array(
+    'bundle' => 'item',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_text',
+    'label' => 'Text',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 4,
     ),
   );
 
@@ -6221,6 +7069,133 @@ function wfs_content_types_field_default_field_instances() {
       ),
       'type' => 'entityreference_autocomplete',
       'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'paragraphs_item-table_section-field_items'.
+  $field_instances['paragraphs_item-table_section-field_items'] = array(
+    'bundle' => 'table_section',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'paragraphs',
+        'settings' => array(
+          'view_mode' => 'full',
+        ),
+        'type' => 'paragraphs_view',
+        'weight' => 1,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_items',
+    'label' => 'Items',
+    'required' => 0,
+    'settings' => array(
+      'add_mode' => 'select',
+      'allowed_bundles' => array(
+        '1_big_block_section' => -1,
+        '1_big_image' => -1,
+        '2_blocks_section' => -1,
+        '2_images_section' => -1,
+        'banner_item_section' => -1,
+        'banner_section' => -1,
+        'brand_item' => -1,
+        'brands_section' => -1,
+        'contact_information_item' => -1,
+        'contact_information_section' => -1,
+        'dos_section' => -1,
+        'image_l_text_r' => -1,
+        'importer_contact_item' => -1,
+        'importers_contacts_section' => -1,
+        'item' => 'item',
+        'news_events_section' => -1,
+        'table_section' => -1,
+        'text_l_image_r' => -1,
+        'text_section' => -1,
+        'winery_contact_section' => -1,
+      ),
+      'bundle_weights' => array(
+        '1_big_block_section' => 2,
+        '1_big_image' => 3,
+        '2_blocks_section' => 4,
+        '2_images_section' => 5,
+        'banner_item_section' => 6,
+        'banner_section' => 7,
+        'brand_item' => 9,
+        'brands_section' => 8,
+        'contact_information_item' => 10,
+        'contact_information_section' => 11,
+        'dos_section' => 12,
+        'image_l_text_r' => 13,
+        'importer_contact_item' => 15,
+        'importers_contacts_section' => 14,
+        'item' => 36,
+        'news_events_section' => 16,
+        'table_section' => 17,
+        'text_l_image_r' => 18,
+        'text_section' => 19,
+        'winery_contact_section' => 20,
+      ),
+      'default_edit_mode' => 'closed',
+      'title' => 'Item',
+      'title_multiple' => 'Items',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(),
+      'type' => 'paragraphs_embed',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'paragraphs_item-table_section-field_title'.
+  $field_instances['paragraphs_item-table_section-field_title'] = array(
+    'bundle' => 'table_section',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_title',
+    'label' => 'Title',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
     ),
   );
 
@@ -6427,99 +7402,19 @@ function wfs_content_types_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'paragraphs_item-winery_contact_section-field_items'.
-  $field_instances['paragraphs_item-winery_contact_section-field_items'] = array(
+  // 'paragraphs_item-winery_contact_section-field_contact_person'.
+  $field_instances['paragraphs_item-winery_contact_section-field_contact_person'] = array(
     'bundle' => 'winery_contact_section',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
-        'module' => 'paragraphs',
-        'settings' => array(
-          'view_mode' => 'full',
-        ),
-        'type' => 'paragraphs_view',
-        'weight' => 1,
-      ),
-      'paragraphs_editor_preview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_items',
-    'label' => 'Items',
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'select',
-      'allowed_bundles' => array(
-        '1_big_block_section' => -1,
-        '1_big_image' => -1,
-        '2_blocks_section' => -1,
-        '2_images_section' => -1,
-        'banner_item_section' => -1,
-        'banner_section' => -1,
-        'brand_item' => -1,
-        'brands_section' => -1,
-        'contact_information_item' => 'contact_information_item',
-        'contact_information_section' => -1,
-        'dos_section' => -1,
-        'image_l_text_r' => -1,
-        'news_events_section' => -1,
-        'text_l_image_r' => -1,
-        'text_section' => -1,
-        'winery_contact_section' => -1,
-      ),
-      'bundle_weights' => array(
-        '1_big_block_section' => 2,
-        '1_big_image' => 3,
-        '2_blocks_section' => 4,
-        '2_images_section' => 5,
-        'banner_item_section' => 6,
-        'banner_section' => 7,
-        'brand_item' => 9,
-        'brands_section' => 8,
-        'contact_information_item' => 10,
-        'contact_information_section' => 11,
-        'dos_section' => 12,
-        'image_l_text_r' => 13,
-        'news_events_section' => 14,
-        'text_l_image_r' => 15,
-        'text_section' => 16,
-        'winery_contact_section' => 17,
-      ),
-      'default_edit_mode' => 'closed',
-      'title' => 'Item',
-      'title_multiple' => 'Items',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 4,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'paragraphs_item-winery_contact_section-field_title'.
-  $field_instances['paragraphs_item-winery_contact_section-field_title'] = array(
-    'bundle' => 'winery_contact_section',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'paragraphs_editor_preview' => array(
         'label' => 'above',
@@ -6529,8 +7424,8 @@ function wfs_content_types_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_title',
-    'label' => 'Title',
+    'field_name' => 'field_contact_person',
+    'label' => 'Contact person:',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -6543,7 +7438,130 @@ function wfs_content_types_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 2,
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'paragraphs_item-winery_contact_section-field_email_address'.
+  $field_instances['paragraphs_item-winery_contact_section-field_email_address'] = array(
+    'bundle' => 'winery_contact_section',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_email_address',
+    'label' => 'Email address:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'paragraphs_item-winery_contact_section-field_telephone_number'.
+  $field_instances['paragraphs_item-winery_contact_section-field_telephone_number'] = array(
+    'bundle' => 'winery_contact_section',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 4,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_telephone_number',
+    'label' => 'Telephone number:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'paragraphs_item-winery_contact_section-field_website'.
+  $field_instances['paragraphs_item-winery_contact_section-field_website'] = array(
+    'bundle' => 'winery_contact_section',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 5,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_website',
+    'label' => 'Website:',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 8,
     ),
   );
 
@@ -6584,20 +7602,24 @@ function wfs_content_types_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Banner section');
+  t('Brands');
   t('Brands items');
-  t('Brands section');
   t('Category');
+  t('Contact of importers');
+  t('Contact of winery');
+  t('Contact person:');
   t('Content approval');
   t('Copyright + ICP number');
   t('DO');
   t('Date');
   t('Description');
+  t('Email address:');
   t('Events');
   t('Exclude title from display');
   t('File');
   t('Image');
   t('Image 2');
-  t('Importers contacts');
+  t('Importer name:');
   t('Importers contacts items');
   t('Items');
   t('Label');
@@ -6607,6 +7629,7 @@ function wfs_content_types_field_default_field_instances() {
   t('Main image (homepage)');
   t('Main image (list)');
   t('News');
+  t('Note:');
   t('Other logos');
   t('Presentation');
   t('Province');
@@ -6615,14 +7638,16 @@ function wfs_content_types_field_default_field_instances() {
   t('Social media platform');
   t('Status');
   t('Subtitle');
+  t('Telephone number:');
   t('Text');
   t('Title');
   t('Type');
   t('URL');
   t('URLs');
   t('Value');
+  t('Website:');
   t('Winery');
-  t('Winery contact');
+  t('Winery Name');
   t('Winery name');
 
   return $field_instances;

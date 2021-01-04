@@ -25,7 +25,6 @@ function wfs_content_types_field_group_info() {
     'weight' => '6',
     'children' => array(
       0 => 'field_text',
-      1 => 'field_title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -56,6 +55,8 @@ function wfs_content_types_field_group_info() {
       0 => 'field_image',
       1 => 'field_importers_contacts',
       2 => 'field_winery_contact',
+      3 => 'field_fc_winery_contact',
+      4 => 'field_fc_importers_contacts',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -110,7 +111,7 @@ function wfs_content_types_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Main tabs',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'group_left_side',
       1 => 'group_right_side',
@@ -170,7 +171,8 @@ function wfs_content_types_field_group_info() {
       1 => 'field_logo',
       2 => 'field_presentation',
       3 => 'field_do',
-      4 => 'group_disclaimer_note',
+      4 => 'field_fc_brands',
+      5 => 'group_disclaimer_note',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
